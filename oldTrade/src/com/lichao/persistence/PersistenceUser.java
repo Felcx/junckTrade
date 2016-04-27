@@ -2,7 +2,7 @@ package com.lichao.persistence;
 
 import com.lichao.bean.User;
 import com.lichao.bean.UserDAO;
-
+ 
 public class PersistenceUser {
 	private UserDAO userDAO; 
     public UserDAO getUserDAO() { 

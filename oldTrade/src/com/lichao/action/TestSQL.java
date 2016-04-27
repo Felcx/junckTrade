@@ -6,7 +6,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import com.lichao.bean.User;
 import com.lichao.persistence.PersistenceUser;
 
-public class TestSQL {
+public class TestSQL  extends BaseAction{
 	public static void main(String[] args) { 
 
         /* 1. Create a new user */ 
@@ -15,26 +15,26 @@ public class TestSQL {
         user.setName("Felcx");
         user.setPwd("123456");
 
-        /* 2. Load the Spring bean configuration and create a bean factory */ 
         ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml"); 
 
-        /* 3. Create instance of PersistenceLayer */ 
         PersistenceUser persistenceLayer = (PersistenceUser) ctx.getBean("persistenceUser");
 
-        /* 4. Save the new user to the database */         
-        persistenceLayer.addUser(user); 
-        System.out.println("用户已保存");
-        /* 5. Confirm that our user was saved */ 
+//        persistenceLayer.addUser(user); 
+//        mLoger.debug("用户已保存");
 //        User userLoadedFromDB = persistenceLayer.findUserById(id);
-//
-//        /* 6. Update the user */         
+//        
+//        
+//        userLoadedFromDB.setBankCard("123343143214");
+//        
 //        persistenceLayer.updateUser(userLoadedFromDB); 
+//       // mLoger.debug(userLoadedFromDB.toString());
 //
-//        /* 7. Confirm that the update worked */ 
 //        User userLoadedFromDBAgain = persistenceLayer              
 //              .findUserById(id);         
 //
 //        /* 8. Delete the user */         
 //         persistenceLayer.deleteUser(user); 
+//         mLoger.debug("用户已删除");
+         
     } 
 }

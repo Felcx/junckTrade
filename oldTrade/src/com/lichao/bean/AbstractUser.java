@@ -214,4 +214,14 @@ public abstract class AbstractUser implements java.io.Serializable {
 		this.goodsesForIdBuyer = goodsesForIdBuyer;
 	}
 
+	@Override
+	public String toString() {
+		return "AbstractUser [id=" + id + ", name=" + name + ", pwd=" + pwd + ", phone=" + phone + ", head=" + head
+				+ ", timeCreate=" + timeCreate + ", timeCurrent=" + timeCurrent + ", rangeSell=" + rangeSell
+				+ ", rangeBuy=" + rangeBuy + ", power=" + power + ", bankCard=" + bankCard + ", email=" + email
+				+ ", realName=" + realName + ", address=" + address + ", commentsForIdTarget=" + commentsForIdTarget
+				+ ", goodsesForIdOwner=" + goodsesForIdOwner + ", commentsForIdAuthor=" + commentsForIdAuthor
+				+ ", goodsesForIdBuyer=" + goodsesForIdBuyer + "]";
+	}
+
 }
