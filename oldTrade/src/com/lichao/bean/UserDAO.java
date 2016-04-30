@@ -99,6 +99,31 @@ public class UserDAO {
 			throw re;
 		}
 	}
+	
+	public List findBySize(int pageNo,int pageSize){
+		try {
+			Query queryObject = getCurrentSession().createQuery("from User ");
+			queryObject.setFirstResult(pageNo*pageSize);
+			queryObject.setMaxResults(pageSize);
+			return queryObject.list();
+		} catch (RuntimeException re) {
+			log.error("find by property name failed", re);
+			throw re;
+		}
+	}
+	
+	public List findBySql(String hbSql,Object[] values){
+		try {
+			Query queryObject = getCurrentSession().createQuery(hbSql);
+			for(int i=0;i<values.length;i++){
+				queryObject.setParameter(i, values[i]);
+			}
+			return queryObject.list();
+		} catch (RuntimeException re) {
+			log.error("find by property name failed", re);
+			throw re;
+		}
+	}
 
 	public List findByProperty(String propertyName, Object value) {
 		log.debug("finding User instance with property: " + propertyName + ", value: " + value);

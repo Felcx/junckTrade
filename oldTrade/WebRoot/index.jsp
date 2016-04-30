@@ -20,15 +20,24 @@
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="#">瓜瓜旧货交易网</a>
+				<a class="navbar-brand" href="#">物物旧货交易网</a>
 			</div>
 			<div id="navbar" class="collapse navbar-collapse">
+			  <s:if test="null==#session.user">
 				<ul class="nav navbar-nav">
-					<li class="active"><a href="#">用户中心</a></li>
-					<li><a href="<%=basePath %>jsp/login.jsp">登录</a></li>
-					<li><a href="#contact" style="visibility:hidden">ddd</a></li>
+				    
+				    <li><a href="<%=basePath %>jsp/login.jsp">登录</a></li>
+					<li><a href="#contact" style="visibility:hidden"></a></li>
+					
 				</ul>
-
+               </s:if>
+               <s:else>
+                   <ul class="nav navbar-nav">
+                    <li class="active"><a href="<%=basePath %>jsp/user_center.jsp"><s:property value="#session.user.name"/></a></li>
+                    <li><a href="<%=basePath %>logoutUser">注销</a></li>
+					<li><a href="#" >上次登录时间：<s:property value="#session.user.currentLogin"/></a></li>
+					</ul>
+               </s:else>
 				<div id="navbar" class="navbar-collapse collapse navbar-right">
 					
 						
@@ -173,18 +182,21 @@
 
 		<hr>
 
-		<footer>
-			<p>&copy; Company 2016 李超</p>
+		<footer >
+		<p>&copy; Company 2016 李超 <a href="jsp/admin/login_admin.jsp" class="navbar-right"><span class="glyphicon glyphicon-globe" style="margin-right: 4px" aria-hidden="true"></span>后台</a> </p>
 		</footer>
 
 	</div>
 </body>
 <script src="js/index.js"></script>
 <script type="text/javascript">
-   $(".searchItem").each(function(){
+   
+
+   $(".searchItem").each(function(){           //选择搜索类型
      $(this).click(function(){
          $("#searchType").text($(this).text());
      });
    });
+   
 </script>
 </html>

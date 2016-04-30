@@ -23,6 +23,10 @@
 		class="com.lichao.persistence.PersistenceUser" abstract="false"
 		lazy-init="default" autowire="default" p:userDAO-ref="UserDAO">
 	</bean>
+	<bean id="persistenceAdmin" class="com.lichao.persistence.PersistenceAdmin"
+		abstract="false" lazy-init="default" autowire="default"
+		p:userDAO-ref="AdminDAO">
+	</bean>
 	<bean id="dataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource"
 		abstract="false" lazy-init="default" autowire="default"		
@@ -64,4 +68,5 @@
 		<property name="sessionFactory">
 			<ref bean="sessionFactory" />
 		</property>
-	</bean></beans>
+	</bean>
+	</beans>
