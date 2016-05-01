@@ -8,17 +8,14 @@
 </head>
 <body>
 
-	<h2 class="sub-header"><span class="glyphicon glyphicon-user" style="margin-right: 4px" aria-hidden="true"></span>用户管理</h2>
+	<h2 class="sub-header"><span class="glyphicon glyphicon-equalizer" style="margin-right: 4px" aria-hidden="true"></span>商品类型管理</h2>
+	<button type="button" onclick="addNew();" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">新增</button>
 	<div class="table-responsive">
 		<table class="table table-striped">
 			<thead>
 				<tr>
-					<th>用户名</th>
-					<th>电话号码</th>
-					<th>卖家等级</th>
-					<th>买家等级</th>
-					<th>用户权限</th>
-					<th>真实姓名</th>
+					<th>名称</th>
+					<th>创建时间</th>
 					<th>操作</th>
 				</tr>
 			</thead>
@@ -31,12 +28,12 @@
 </body>
 <script type="text/javascript">
 
-function postPower(id,power){
+function postPower(power){
     $.ajax({
 					type : "POST",
-					url :"<%=basePath %>setPowerUser",
+					url :"<%=basePath %>insertTypes",
 					async:true,
-					data:{"user.id":id , "user.power":power},
+					data:{"type.name":power},
 					dataType : "json",
 					success : function(data) {
 						if(data){
@@ -54,22 +51,16 @@ function postPower(id,power){
 	}); 
 }
 
-function setPower(id){
-   var powers=[" ","可买卖","只可买","只可卖","功能被限制"];
-   var html='<select id="powerSelect">'
-             +'<option value="1">'+powers[1]+'</option>'
-             +'<option value="2">'+powers[2]+'</option>'
-             +'<option value="3">'+powers[3]+'</option>'
-             +'<option value="4">'+powers[4]+'</option>'
-             +'</select> ';
+function addNew(id){
+   var html='<input id="typeName" autofocus />';
        
    var d = dialog({
-    title: '请选择权限',
+    title: '请输入类型',
     content: html,
     okValue:'确定',
     ok:function(){
-       var power=$("#powerSelect").val();
-       postPower(id,power);
+       var power=$("#typeName").val();
+       postPower(power);
        
        },
     cancelValue:'取消',
@@ -80,11 +71,13 @@ function setPower(id){
    d.showModal();
 }
 
+
+
 function delUser(id){          
-  if(confirm("确定删除此用户？")){
+  if(confirm("确定删除此类型？")){
       $.ajax({
 					type : "POST",
-					url :"<%=basePath %>delectUser",
+					url :"<%=basePath %>delectTypes",
 					async:true,
 					data:{"user.id":id },
 					dataType : "json",
@@ -105,10 +98,10 @@ function delUser(id){
   }  
 }
 
-function query(pageNo,pageSize){         //请求登录
+function query(pageNo,pageSize){         //请求数据
           $.ajax({
 					type : "POST",
-					url :"<%=basePath %>queryAllBySizeUser",
+					url :"<%=basePath %>queryAllBySizeTypes",
 					async:true,
 					data:{"pageNo":pageNo , "pageSize":pageSize},
 					dataType : "json",
@@ -121,16 +114,9 @@ function query(pageNo,pageSize){         //请求登录
 					           for(var i=0;i<b.dataset.length;i++){
 					               $("#dataCotain").append("<tr>"
 					               +"<td>"+b.dataset[i].name+"</td>"
-					               +"<td>"+b.dataset[i].phone+"</td>"
+					               +"<td>"+b.dataset[i].currentCreate+"</td>"
 					               +"<td>"
-					               +b.dataset[i].rangeSellCn
-					               +"</td>"
-					               +"<td>"+b.dataset[i].rangeBuyCn+"</td>"
-					               +"<td>"+b.dataset[i].powerCn+"</td>"
-					               +"<td>"+b.dataset[i].realName+"</td>"
-					               +"<td>"
-					               +"<a href='javascript:void(0);' onclick='setPower("+b.dataset[i].id+")'>设置权限"+"</a>"
-					               +"&nbsp&nbsp<a href='javascript:void(0);' onclick='delUser("+b.dataset[i].id+")'>删除用户"+"</a>"
+					               +"<a href='javascript:void(0);' onclick='delUser("+b.dataset[i].id+")'>删除类型"+"</a>"
 					               +"</td>"
 					               +"</tr>"
 					               );
@@ -163,6 +149,10 @@ function init(count,index){
 var display=0;
 if(count<=9){
   display=count;
+  if(count<=0){
+   display=1;
+   count=1;
+  }
 }else{
   display=9;
 }

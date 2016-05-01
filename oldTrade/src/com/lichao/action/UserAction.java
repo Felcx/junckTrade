@@ -22,7 +22,7 @@ public class UserAction extends BaseAction {
 	private static int helloCount = 0;
 	private String authCode;
 	private User user;
-	private int pageNo;   //传过来前记得把pageNo减1，比如第一页传过来为第0页
+	private int pageNo;   
 	private int pageSize;
 	public int getPageNo() {
 		return pageNo;
@@ -47,6 +47,45 @@ public class UserAction extends BaseAction {
 		return SUCCESS;
 	}
 	
+	/**
+	 * 设置权限
+	 * @return
+	 * @throws Exception
+	 */
+	public String setPower() throws Exception {
+		   if (user != null) {
+				if (user.getId() != null) {
+					User userQuery=persistenceLayer.findUserById(user.getId());
+					if(userQuery!=null){
+						userQuery.setPower(user.getPower());
+						persistenceLayer.updateUser(userQuery);
+						successMessage("更新成功！");
+					}
+				}
+			}
+		return null;
+	}
+	
+	/**
+	 * 删除用户
+	 * @return
+	 * @throws Exception
+	 */
+	public String delect() throws Exception {
+		   if (user != null) {
+				if (user.getId() != null) {
+				    persistenceLayer.deleteUser(user);
+				    successMessage("删除成功！");
+				}
+			}
+		return null;
+	}
+	
+	/**
+	 * 登出
+	 * @return
+	 * @throws Exception
+	 */
 	public String logout() throws Exception {
 		   mSession.remove(BaseAction.enumSession.user.toString());
 		   
@@ -96,6 +135,13 @@ public class UserAction extends BaseAction {
 		return null;
 	}
 	
+	
+	
+	/**
+	 * 分页查询
+	 * @return
+	 * @throws Exception
+	 */
 	public String queryAllBySize() throws Exception {
 		
 		if(pageNo!=0&&pageSize!=0){

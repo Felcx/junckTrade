@@ -161,4 +161,16 @@ public class TypesDAO {
 	public static TypesDAO getFromApplicationContext(ApplicationContext ctx) {
 		return (TypesDAO) ctx.getBean("TypesDAO");
 	}
+
+	public List findBySize(int pageNo,int pageSize){
+		try {
+			Query queryObject = getCurrentSession().createQuery("from Types ");
+			queryObject.setFirstResult(pageNo*pageSize);
+			queryObject.setMaxResults(pageSize);
+			return queryObject.list();
+		} catch (RuntimeException re) {
+			log.error("find by property name failed", re);
+			throw re;
+		}
+	}
 }

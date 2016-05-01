@@ -71,10 +71,10 @@
           target="<%=basePath%>jsp/admin/user.jsp";
        break;
        case 2:
-          target="<%=basePath%>jsp/admin/user.jsp";
+          target="<%=basePath%>jsp/admin/type.jsp";
        break;
        case 3:
-          target="<%=basePath%>jsp/admin/user.jsp";
+          target="<%=basePath%>jsp/admin/notice.jsp";
        break;
        }
        $("#manFrame").attr("src",target);

@@ -4,6 +4,9 @@ import java.sql.Timestamp;
 import java.util.List;
 
 import com.lichao.bean.Admin;
+import com.lichao.bean.Message;
+import com.lichao.bean.MessageDAO;
+import com.lichao.bean.MessageId;
 import com.lichao.bean.User;
 import com.lichao.persistence.PersistenceAdmin;
 import com.lichao.persistence.PersistenceUser;
@@ -17,6 +20,9 @@ public class AdminAction extends BaseAction {
 	private static final long serialVersionUID = 1L;
 	private String authCode;
 	private Admin user;
+	private Message message;
+	private MessageDAO messageDao = (MessageDAO) mContext.getBean("MessageDAO");
+	private PersistenceAdmin persistenceLayer = (PersistenceAdmin) mContext.getBean("persistenceAdmin");
 
 	public Admin getUser() {
 		return user;
@@ -31,10 +37,55 @@ public class AdminAction extends BaseAction {
 		return SUCCESS;
 	}
 	
+	/**
+	 * logout
+	 * @return
+	 * @throws Exception
+	 */
 	public String logout() throws Exception {
 		   mSession.remove(BaseAction.enumSession.admin.toString());
 		   
 		return LOGIN;
+	}
+	
+	/**
+	 * 发布或更新公告
+	 * @return
+	 * @throws Exception
+	 */
+	public String notice() throws Exception {
+		if(message!=null){
+			if(message.getMessage()!=null){
+				List<Message> messages=messageDao.findAll();
+				if(messages!=null && messages.size()!=0){
+					messages.get(0).setMessage(message.getMessage());
+					messages.get(0).setTimeUpdate(new Timestamp(System.currentTimeMillis()));
+					messageDao.merge(messages.get(0));
+				}else{
+					message.setTimeCreate(new Timestamp(System.currentTimeMillis()));
+					message.setTimeUpdate(new Timestamp(System.currentTimeMillis()));
+					MessageId id=new MessageId(1,(Admin)persistenceLayer.getUserDAO().findAll().get(0));
+					message.setId(id);
+					messageDao.save(message);
+				}
+				successMessage("发布成功！");
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * 读取公告
+	 * @return
+	 * @throws Exception
+	 */
+	public String readNotice() throws Exception {
+		List<Message> messages=messageDao.findAll();
+		if(messages!=null && messages.size()!=0){
+			messages.get(0).setId(null);
+			successMessage("读取成功", messages.get(0));
+		}
+		return null;
 	}
 	
 	/**
@@ -47,7 +98,7 @@ public class AdminAction extends BaseAction {
 			String authSession = mSession.get("yanzheng").toString();
 			if (authSession.equals(authCode)) {
 				if (user != null) {
-					PersistenceAdmin persistenceLayer = (PersistenceAdmin) mContext.getBean("persistenceAdmin");
+					
 					if (user.getName() != null) {
 						List<Admin> users = persistenceLayer.getUserDAO().findByName(user.getName());
 						if(users.size()>0){
@@ -90,7 +141,6 @@ public class AdminAction extends BaseAction {
 			String authSession = mSession.get("yanzheng").toString();
 			if (authSession.equals(authCode)) {
 				if (user != null) {
-					PersistenceAdmin persistenceLayer = (PersistenceAdmin) mContext.getBean("persistenceAdmin");
 					if (user.getName() != null) {
 						List<Admin> users = persistenceLayer.getUserDAO().findByName(user.getName());
 						if (users.size() == 0) {
@@ -129,6 +179,14 @@ public class AdminAction extends BaseAction {
 
 	public void setAuthCode(String authCode) {
 		this.authCode = authCode;
+	}
+
+	public Message getMessage() {
+		return message;
+	}
+
+	public void setMessage(Message message) {
+		this.message = message;
 	}
 
 }

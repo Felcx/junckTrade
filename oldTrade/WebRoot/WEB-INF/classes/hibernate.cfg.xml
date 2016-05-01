@@ -15,7 +15,7 @@
 		<property name="connection.password">TZLaiomy</property>
 		<property name="connection.username">Felcx</property>
 		<property name="connection.url">
-			jdbc:mysql://localhost:3306/junktrade
+			jdbc:mysql://localhost:3306/junktrade?useSSL=true
 		</property>
 		<property name="connection.driver_class">
 			com.mysql.jdbc.Driver

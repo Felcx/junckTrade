@@ -17,5 +17,9 @@
 		     <result name="success">/jsp/register.jsp</result>
 		     <result name="login">/jsp/admin/login_admin.jsp</result>
 		</action>
+		<action name="*Types" class="com.lichao.action.TypeAction" method="{1}">
+		     <result name="success">/jsp/register.jsp</result>
+		     <result name="login">/jsp/admin/login_admin.jsp</result>
+		</action>
 	</package>
 </struts> 

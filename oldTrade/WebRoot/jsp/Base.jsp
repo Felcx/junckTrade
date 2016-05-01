@@ -21,10 +21,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
+    <link href="css/ui-dialog.css" rel="stylesheet">
     
     <script src="js/jquery-1.12.3.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/jquery.paginate.js"></script>
+    <script src="js/dialog-min.js"></script>
+    <script src="js/dialog-plus-min.js"></script>
    
   </head>
   

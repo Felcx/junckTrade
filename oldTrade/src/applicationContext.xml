@@ -30,7 +30,7 @@
 	<bean id="dataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource"
 		abstract="false" lazy-init="default" autowire="default"		
-		p:url="jdbc:mysql://localhost:3306/junktrade"
+		p:url="jdbc:mysql://localhost:3306/junktrade?useSSL=true"
 		p:username="Felcx" p:password="TZLaiomy" p:driverClassName="com.mysql.jdbc.Driver">
 	</bean>
 	
