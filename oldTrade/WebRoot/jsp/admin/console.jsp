@@ -25,7 +25,8 @@
 					<li class="active"><a href="javascript:void(0);"><s:property
 								value="#session.admin.name" /></a></li>
 					<li><a href="<%=basePath%>logoutAdmin">注销</a></li>
-					<li><a href="javascript:void(0);">上次登录时间：<s:property
+					<li><a href="javascript:void(0)" onclick="showPwd('<s:property value="#session.admin.id" />')">修改密码</a></li>
+					<li><a href="javascript:void(0);">本次登录时间：<s:property
 								value="#session.admin.currentLogin" /></a></li>
 				</ul>
 			</div>
@@ -56,8 +57,66 @@
 
 </body>
 <script type="text/javascript">
-  function clearSelected(){
+
+
+ function postPower(id,oldPwd,pwd){
+    $.ajax({
+					type : "POST",
+					url :"<%=basePath %>chuangePwdAdmin",
+					async:true,
+					data:{"user.id":id , "oldPwd":oldPwd, "user.pwd":pwd},
+					dataType : "json",
+					success : function(data) {
+						if(data){
+							var b = eval(data); //转换为对象
+							if(b.code==0 ){
+							  alert(b.message);
+							  //window.location.reload(); 
+							}else {
+							  alert(b.message);
+							}
+						}
+					  },
+					  error : function(XMLHttpRequest, textStatus, errorThrown) {
+						}
+	}); 
+}
+  
+  function showPwd(id){
+   var html='原始密码：<input id="srcPwd"/><br/>'
+           +'新的密码：<input id="newPwd"/><br/>'
+           +'重复密码：<input id="newRePwd"/>';
+       
+   var d = dialog({
+    title: '修改密码',
+    content: html,
+    okValue:'确定',
+    ok:function(){
+       var srcPwd=$("#srcPwd").val();
+       var newPwd=$("#newPwd").val();
+       var newRePwd=$("#newRePwd").val();
+       if(srcPwd.length!=0&&newPwd.length!=0&&newRePwd.length!=0){
+           if(newPwd==newRePwd){
+              postPower(id,srcPwd,newPwd);
+           }else{
+              alert("新密码不一致！");
+           }
+       }else{
+         alert("请输入密码");
+       }
+      
           
+       },
+    cancelValue:'取消',
+    cancel:function(){
+    
+    }    
+   });
+   d.showModal();
+}
+
+  function chuangPwd(){
+          alert("修改密码");
   }
   $("#items").children().each(function(i){
      $(this).click(function(){

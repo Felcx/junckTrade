@@ -23,7 +23,36 @@ public class AdminAction extends BaseAction {
 	private Message message;
 	private MessageDAO messageDao = (MessageDAO) mContext.getBean("MessageDAO");
 	private PersistenceAdmin persistenceLayer = (PersistenceAdmin) mContext.getBean("persistenceAdmin");
+	private String oldPwd;
+	
+	/**
+	 * 修改密码
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public String chuangePwd() throws Exception {
+		if (user != null) {
+			if (user.getId() != null) {
+				Admin userQuery = persistenceLayer.findUserById(user.getId());
+				if (userQuery != null) {
+					if (oldPwd != null) {
+						String pwd = MD5Util.MD5(oldPwd);
+						if (userQuery.getPwd().equals(pwd)) {
+							userQuery.setPwd(MD5Util.MD5(user.getPwd()));
+							persistenceLayer.updateUser(userQuery);
+							successMessage("更改密码成功！");
+						} else {
+							errorMessage("输入的密码不正确！");
+						}
+					}
 
+				}
+			}
+		}
+		return null;
+	}
+	
 	public Admin getUser() {
 		return user;
 	}
@@ -107,8 +136,8 @@ public class AdminAction extends BaseAction {
 								users.get(0).setTimeCurrent(currentTime);
 								persistenceLayer.updateUser(users.get(0));
 								successMessage("用户登录成功！");
-								user.setCurrentLogin(CalendarUtil.getDate(currentTime));
-								mSession.put(BaseAction.enumSession.admin.toString(), user);
+								users.get(0).getReady();
+								mSession.put(BaseAction.enumSession.admin.toString(), users.get(0));
 							}else{
 								errorMessage("用户密码错误！");
 								return null;
@@ -148,7 +177,7 @@ public class AdminAction extends BaseAction {
 							user.setTimeCreate(currentTime);
 							user.setTimeCurrent(currentTime);
 							user.setPwd(MD5Util.MD5(user.getPwd()));
-							user.setCurrentLogin(CalendarUtil.getDate(currentTime));
+							//user.setCurrentLogin(CalendarUtil.getDate(currentTime));
 							
 							persistenceLayer.addUser(user);
 							successMessage("注册成功！");
@@ -187,6 +216,14 @@ public class AdminAction extends BaseAction {
 
 	public void setMessage(Message message) {
 		this.message = message;
+	}
+
+	public String getOldPwd() {
+		return oldPwd;
+	}
+
+	public void setOldPwd(String oldPwd) {
+		this.oldPwd = oldPwd;
 	}
 
 }

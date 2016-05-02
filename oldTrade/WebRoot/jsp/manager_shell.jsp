@@ -25,8 +25,8 @@
 					<li class="active"><a href="javascript:void(0);"><s:property
 								value="#session.user.name" /></a></li>
 					<li><a href="<%=basePath%>logoutUser">注销</a></li>
-					<li><a href="javascript:void(0)" onclick="showPwd('<s:property value="#session.user.id" />')">修改密码</a></li>
-					<li><a href="javascript:void(0);">本次登录时间：<s:property
+					<li><a href="javascript:void(0)" onclick="chuangPwd()" >修改密码</a></li>
+					<li><a href="javascript:void(0);">上次登录时间：<s:property
 								value="#session.user.currentLogin" /></a></li>
 				</ul>
 			</div>
@@ -47,7 +47,7 @@
         </div>
          <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 ">
          <div class="embed-responsive embed-responsive-16by9"> 
-              <iframe id="manFrame" class="embed-responsive-item" src="<%=basePath%>jsp/user_info.jsp"></iframe>
+              <iframe id="manFrame" class="embed-responsive-item" src="<%=basePath%>jsp/admin/user.jsp"></iframe>
          </div>
           
         </div>
@@ -59,76 +59,22 @@
   function chuangPwd(){
           alert("修改密码");
   }
-  
-  function postPower(id,oldPwd,pwd){
-    $.ajax({
-					type : "POST",
-					url :"<%=basePath %>chuangePwdUser",
-					async:true,
-					data:{"user.id":id , "oldPwd":oldPwd, "user.pwd":pwd},
-					dataType : "json",
-					success : function(data) {
-						if(data){
-							var b = eval(data); //转换为对象
-							if(b.code==0 ){
-							  alert(b.message);
-							  //window.location.reload(); 
-							}else {
-							  alert(b.message);
-							}
-						}
-					  },
-					  error : function(XMLHttpRequest, textStatus, errorThrown) {
-						}
-	}); 
-}
-  
-  function showPwd(id){
-   var html='原始密码：<input id="srcPwd"/><br/>'
-           +'新的密码：<input id="newPwd"/><br/>'
-           +'重复密码：<input id="newRePwd"/>';
-       
-   var d = dialog({
-    title: '修改密码',
-    content: html,
-    okValue:'确定',
-    ok:function(){
-       var srcPwd=$("#srcPwd").val();
-       var newPwd=$("#newPwd").val();
-       var newRePwd=$("#newRePwd").val();
-       if(srcPwd.length!=0&&newPwd.length!=0&&newRePwd.length!=0){
-           if(newPwd==newRePwd){
-              postPower(id,srcPwd,newPwd);
-           }else{
-              alert("新密码不一致！");
-           }
-       }else{
-         alert("请输入密码");
-       }
-      
-          
-       },
-    cancelValue:'取消',
-    cancel:function(){
-    
-    }    
-   });
-   d.showModal();
-}
-  
   $("#items").children().each(function(i){
      $(this).click(function(){
        $("#items").children(".active").removeClass("active");
        var target="";
        switch(i){
        case 0:
-       	target="<%=basePath%>jsp/user_info.jsp";
+       	target="<%=basePath%>jsp/admin/user.jsp";
        break;
        case 1:
-          target="<%=basePath%>jsp/manager_shell.jsp";
+          target="<%=basePath%>jsp/admin/user.jsp";
        break;
        case 2:
-          target="<%=basePath%>jsp/manager_buy.jsp";
+          target="<%=basePath%>jsp/admin/type.jsp";
+       break;
+       case 3:
+          target="<%=basePath%>jsp/admin/notice.jsp";
        break;
        }
        $("#manFrame").attr("src",target);
