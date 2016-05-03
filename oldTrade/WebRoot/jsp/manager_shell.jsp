@@ -7,79 +7,137 @@
 <link href="css/console.css" rel="stylesheet">
 </head>
 <body>
-	
-    <nav class="navbar navbar-fixed-top navbar-inverse">
-		<div class="container">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed"
-					data-toggle="collapse" data-target="#navbar" aria-expanded="false"
-					aria-controls="navbar">
-					<span class="sr-only">Toggle navigation</span> <span
-						class="icon-bar"></span> <span class="icon-bar"></span> <span
-						class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" href="javascript:void(0);">物物旧货交易网-用户中心</a>
-			</div>
-			<div id="navbar" class="collapse navbar-collapse">
-				<ul class="nav navbar-nav">
-					<li class="active"><a href="javascript:void(0);"><s:property
-								value="#session.user.name" /></a></li>
-					<li><a href="<%=basePath%>logoutUser">注销</a></li>
-					<li><a href="javascript:void(0)" onclick="chuangPwd()" >修改密码</a></li>
-					<li><a href="javascript:void(0);">上次登录时间：<s:property
-								value="#session.user.currentLogin" /></a></li>
-				</ul>
-			</div>
-			<!-- /.nav-collapse -->
-		</div>
-		<!-- /.container -->
-	</nav>
 
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-sm-3 col-md-2 sidebar">
-          <ul class="nav nav-sidebar" id="items">
-            <li class="active" ><a href="javascript:void(0);"><span class="glyphicon glyphicon-user" style="margin-right: 4px" aria-hidden="true"></span>个人信息 <span class="sr-only">(current)</span></a></li>
-            <li ><a href="javascript:void(0);"><span class="glyphicon glyphicon-blackboard" style="margin-right: 4px" aria-hidden="true"></span>商品管理</a></li>
-            <li ><a href="javascript:void(0);"><span class="glyphicon glyphicon-equalizer" style="margin-right: 4px" aria-hidden="true"></span>购物管理</a></li>
-          </ul>
-          
-        </div>
-         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 ">
-         <div class="embed-responsive embed-responsive-16by9"> 
-              <iframe id="manFrame" class="embed-responsive-item" src="<%=basePath%>jsp/admin/user.jsp"></iframe>
-         </div>
-          
-        </div>
-      </div>
-    </div>
-
+	<h2 class="sub-header"><span class="glyphicon glyphicon-blackboardr" style="margin-right: 4px" aria-hidden="true"></span>商品类型管理</h2>
+	<button type="button" onclick="addNew();" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">新增</button>
+	<div class="table-responsive">
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>名称</th>
+					<th>价格</th>
+					<th>类型</th>
+					<th>状态</th>
+					<th>创建时间</th>					
+					<th>操作</th>
+				</tr>
+			</thead>
+			<tbody id="dataCotain">
+				
+			</tbody>
+		</table>
+		<div id="demo2"></div>
+	</div>
 </body>
 <script type="text/javascript">
-  function chuangPwd(){
-          alert("修改密码");
+
+function addNew(){
+    window.location.href="<%=basePath%>jsp/goods_new.jsp";
+}
+
+
+
+
+function delUser(id){          
+  if(confirm("确定删除此类型？")){
+      $.ajax({
+					type : "POST",
+					url :"<%=basePath %>delectTypes",
+					async:true,
+					data:{"user.id":id },
+					dataType : "json",
+					success : function(data) {
+						if(data){
+							var b = eval(data); //转换为对象
+							if(b.code==0 ){
+							  alert(b.message);
+							  window.location.reload(); 
+							}else {
+							  alert(b.message);
+							}
+						}
+					  },
+					  error : function(XMLHttpRequest, textStatus, errorThrown) {
+						}
+	}); 
+  }  
+}
+
+function query(pageNo,pageSize){         //请求数据
+          $.ajax({
+					type : "POST",
+					url :"<%=basePath %>queryAllBySizeTypes",
+					async:true,
+					data:{"pageNo":pageNo , "pageSize":pageSize},
+					dataType : "json",
+					success : function(data) {
+						if(data){
+							var b = eval(data); //转换为对象
+							if(b.code==0 ){
+							$("#dataCotain").empty();
+					        if(b.dataset.length>0){
+					           for(var i=0;i<b.dataset.length;i++){
+					               $("#dataCotain").append("<tr>"
+					               +"<td>"+b.dataset[i].name+"</td>"
+					               +"<td>"+b.dataset[i].currentCreate+"</td>"
+					               +"<td>"
+					               +"<a href='javascript:void(0);' onclick='delUser("+b.dataset[i].id+")'>删除类型"+"</a>"
+					               +"</td>"
+					               +"</tr>"
+					               );
+					               
+					           }
+					        }		
+							
+							  var count=Math.ceil(b.totalCount/pageSize);
+							  init(count,pageNo);
+							}else {
+							  alert(b.message);
+							}
+						}
+					  },
+					  error : function(XMLHttpRequest, textStatus, errorThrown) {
+						}
+					}); 
+    }
+
+$(document).ready(function(){
+   
+	var pageNo=1;
+	var pageSize=10;
+	//query(pageNo, pageSize);
+});
+
+
+
+function init(count,index){
+var display=0;
+if(count<=9){
+  display=count;
+  if(count<=0){
+   display=1;
+   count=1;
   }
-  $("#items").children().each(function(i){
-     $(this).click(function(){
-       $("#items").children(".active").removeClass("active");
-       var target="";
-       switch(i){
-       case 0:
-       	target="<%=basePath%>jsp/admin/user.jsp";
-       break;
-       case 1:
-          target="<%=basePath%>jsp/admin/user.jsp";
-       break;
-       case 2:
-          target="<%=basePath%>jsp/admin/type.jsp";
-       break;
-       case 3:
-          target="<%=basePath%>jsp/admin/notice.jsp";
-       break;
-       }
-       $("#manFrame").attr("src",target);
-       $(this).addClass("active");
-     });
-  });
+}else{
+  display=9;
+}
+$("#demo2").paginate({
+				count 		: count,
+				start 		: index,
+				display     : display,
+				border: true,
+                border_color            : '#AAE',
+				text_color  			: '#79B5E3',
+				text_hover_color        : '#FFFFFF',
+				background_hover_color	: '#26B', 
+				border_hover_color      : '#AAE',
+				background_color        : '#FFFFFF',
+				images		            : false,
+				mouse		: 'press',
+				onChange     			: function(page){
+											query(page,10);
+                                          }
+			});
+			}
 </script>
 </html>
