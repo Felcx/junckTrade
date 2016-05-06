@@ -48,6 +48,53 @@ public class UserAction extends BaseAction {
 	}
 
 	/**
+	 * 根据id查询用户信息
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public String findById() throws Exception {
+		if (user != null) {
+			if (user.getId() != null) {
+				User userQuery = persistenceLayer.findUserById(user.getId());
+				if (userQuery != null) {
+                      userQuery.setready();
+					successMessage("更改密码成功！",userQuery);
+
+				}
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * 补充用户信息
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public String update() throws Exception {
+		if (user != null) {
+			if (user.getId() != null) {
+				User userQuery = persistenceLayer.findUserById(user.getId());
+				if (userQuery != null) {
+					        userQuery.setAddress(user.getAddress());
+					        userQuery.setPhone(user.getPhone());
+					        userQuery.setBankCard(user.getBankCard());
+					        userQuery.setEmail(user.getEmail());
+					        userQuery.setRealName(user.getRealName());
+					        userQuery.setSex(user.getSex());
+							persistenceLayer.updateUser(userQuery);
+							successMessage("上传用户信息成功！");
+					}
+			
+				}
+			
+		}
+		return null;
+	}
+
+	/**
 	 * 修改密码
 	 * 
 	 * @return

@@ -39,6 +39,7 @@ public class UserDAO {
 	public static final String EMAIL = "email";
 	public static final String REAL_NAME = "realName";
 	public static final String ADDRESS = "address";
+	public static final String SEX = "sex";
 
 	private SessionFactory sessionFactory;
 

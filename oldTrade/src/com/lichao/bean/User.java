@@ -15,6 +15,7 @@ public class User extends AbstractUser implements java.io.Serializable, Cloneabl
 	// Constructors
 
 	private String currentLogin;
+	private String currentCreate;
 	private String rangeBuyCn;
 	private String rangeSellCn;
 	private String powerCn;
@@ -50,6 +51,7 @@ public class User extends AbstractUser implements java.io.Serializable, Cloneabl
 		setRangeBuyCn();
 		setRangeSellCn();
 		setCurrentLogin();
+		setCurrentCreate();
 		setPowerCn();
 	}
 
@@ -104,6 +106,14 @@ public class User extends AbstractUser implements java.io.Serializable, Cloneabl
 
 	public void setPowerCn() {
 		this.powerCn = powers[getPower()];
+	}
+
+	public String getCurrentCreate() {
+		return currentCreate;
+	}
+
+	public void setCurrentCreate() {
+		this.currentCreate = CalendarUtil.getDate(getTimeCreate());
 	}
 
 }

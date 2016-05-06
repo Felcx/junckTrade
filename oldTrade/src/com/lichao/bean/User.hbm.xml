@@ -75,6 +75,11 @@
                 <comment>收货地址</comment>
             </column>
         </property>
+        <property name="sex" type="java.lang.String">
+            <column name="sex" length="45">
+                <comment>性别</comment>
+            </column>
+        </property>
         <set name="commentsForIdTarget" inverse="true">
             <key>
                 <column name="id_target" not-null="true">

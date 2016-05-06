@@ -27,6 +27,7 @@ public abstract class AbstractUser implements java.io.Serializable {
 	private String email;
 	private String realName;
 	private String address;
+	private String sex;
 	private Set commentsForIdTarget = new HashSet(0);
 	private Set goodsesForIdOwner = new HashSet(0);
 	private Set commentsForIdAuthor = new HashSet(0);
@@ -222,6 +223,14 @@ public abstract class AbstractUser implements java.io.Serializable {
 				+ ", realName=" + realName + ", address=" + address + ", commentsForIdTarget=" + commentsForIdTarget
 				+ ", goodsesForIdOwner=" + goodsesForIdOwner + ", commentsForIdAuthor=" + commentsForIdAuthor
 				+ ", goodsesForIdBuyer=" + goodsesForIdBuyer + "]";
+	}
+
+	public String getSex() {
+		return sex;
+	}
+
+	public void setSex(String sex) {
+		this.sex = sex;
 	}
 
 }

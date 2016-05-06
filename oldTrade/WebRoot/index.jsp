@@ -20,7 +20,7 @@
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="#">物物旧货交易网</a>
+				<a class="navbar-brand" href="javascript:void(0);">物物旧货交易网</a>
 			</div>
 			<div id="navbar" class="collapse navbar-collapse">
 				<s:if test="null==#session.user">
@@ -37,7 +37,7 @@
 							href="<%=basePath %>jsp/user_center.jsp"><s:property
 									value="#session.user.name" /></a></li>
 						<li><a href="<%=basePath %>logoutUser">注销</a></li>
-						<li><a href="#">上次登录时间：<s:property
+						<li><a href="#">本次登录时间：<s:property
 									value="#session.user.currentLogin" /></a></li>
 					</ul>
 				</s:else>
