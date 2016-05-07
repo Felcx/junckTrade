@@ -5,6 +5,8 @@
 <html>
 <head>
 <link href="css/console.css" rel="stylesheet">
+
+
 <style>
 *{ margin:0; padding:0;}
 #box{ margin:50px auto; width:540px; min-height:400px; background:#FF9}
@@ -32,16 +34,16 @@
 	    </div>
 	    <div class="row">
 	       <div class="col-xs-3 col-md-3"><p class="text-right" style="margin-top: 8px">原始价格:</div>
-	       <div class="col-xs-3 col-md-3"><input id="price" class="form-control" readonly="true"/></div>
+	       <div class="col-xs-3 col-md-3"><input id="price" class="form-control" /></div>
 	       <div class="col-xs-3 col-md-3"><p class="text-right" style="margin-top: 8px">出售价格:</p></div>
-	       <div class="col-xs-3 col-md-3"><input id="priceNew" class="form-control" readonly="true"/></div>
+	       <div class="col-xs-3 col-md-3"><input id="priceNew" class="form-control" /></div>
 	    </div>
                 	    
 	    <div class="row">
 	       <div class="col-xs-3 col-md-3"><p class="text-right" style="margin-top: 8px">几成新:</p></div>
-	       <div class="col-xs-3 col-md-3"><input id="rangeOld" class="form-control" readonly="true"/></div>
+	       <div class="col-xs-3 col-md-3"><input id="rangeOld" class="form-control" /></div>
 	       <div class="col-xs-3 col-md-3"><p class="text-right" style="margin-top: 8px">描述:</p></div>
-	       <div class="col-xs-3 col-md-3"><input id="description" class="form-control" readonly="true"/></div>
+	       <div class="col-xs-3 col-md-3"><input id="description" class="form-control" /></div>
 	    </div>
 	    
 	    
@@ -51,11 +53,14 @@
 	</div>
 </body>
 <script type="text/javascript">
+var goodsId=Math.floor((new Date()).valueOf()/1000);
+var userId='<s:property value="#session.user.id" />';
+var hasPhoto=false;
 
 $('#test').diyUpload({
-	url:"<%=basePath %>uploadFileGoods",
+	url:"<%=basePath %>uploadFileGoods?goodsId="+goodsId+"&userId="+userId,
 	success:function( data ) {
-	   
+	   hasPhoto=true;
 		console.info( data );
 	},
 	error:function( err ) {
@@ -64,6 +69,8 @@ $('#test').diyUpload({
 });
 
 function update(id){
+
+   if(hasPhoto){
        var name=$("#name").val();
        var type=$("#type").val();
        var srcPrice=$("#price").val();
@@ -73,16 +80,16 @@ function update(id){
        
         $.ajax({
 					type : "POST",
-					url :"<%=basePath %>insertGoods",
+					url :"<%=basePath %>genxinGoods",
 					async:true,
-					data:{"userId":id,"good.name":name,"typeId":type,"good.price":srcPrice,"good.priceNew":priceNew,"good.rangeOld":rangOld,"good.description":discrip},
+					data:{"goodsId":goodsId,"userId":id,"good.name":name,"typeId":type,"good.price":srcPrice,"good.priceNew":priceNew,"good.rangeOld":rangOld,"good.description":discrip},
 					dataType : "json",
 					success : function(data) {
 						if(data){
 							var b = eval(data); //转换为对象
 							if(b.code==0 ){
 					           alert(b.message);
-							
+							   window.location.href="<%=basePath %>manager_shell.jsp";
 							}else {
 							  alert(b.message);
 							}
@@ -92,7 +99,9 @@ function update(id){
 						}
 					}); 
             
-       
+       }else{
+         alert("请先上传商品图片！");
+       }
     }
 </script>
 </html>
