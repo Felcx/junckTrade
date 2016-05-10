@@ -14,13 +14,13 @@ public class Message extends AbstractMessage implements java.io.Serializable {
 	}
 
 	/** minimal constructor */
-	public Message(MessageId id, String message) {
-		super(id, message);
+	public Message(Admin admin, String message) {
+		super(admin, message);
 	}
 
 	/** full constructor */
-	public Message(MessageId id, String message, Timestamp timeCreate, Boolean isHistory, Timestamp timeUpdate) {
-		super(id, message, timeCreate, isHistory, timeUpdate);
+	public Message(Admin admin, String message, Timestamp timeCreate, Boolean isHistory, Timestamp timeUpdate) {
+		super(admin, message, timeCreate, isHistory, timeUpdate);
 	}
 
 }

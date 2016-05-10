@@ -161,7 +161,7 @@ public class TypesDAO {
 	public static TypesDAO getFromApplicationContext(ApplicationContext ctx) {
 		return (TypesDAO) ctx.getBean("TypesDAO");
 	}
-
+	
 	public List findBySize(int pageNo,int pageSize){
 		try {
 			Query queryObject = getCurrentSession().createQuery("from Types ");

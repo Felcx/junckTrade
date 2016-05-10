@@ -11,7 +11,8 @@ public abstract class AbstractMessage implements java.io.Serializable {
 
 	// Fields
 
-	private MessageId id;
+	private Integer id;
+	private Admin admin;
 	private String message;
 	private Timestamp timeCreate;
 	private Boolean isHistory;
@@ -24,15 +25,14 @@ public abstract class AbstractMessage implements java.io.Serializable {
 	}
 
 	/** minimal constructor */
-	public AbstractMessage(MessageId id, String message) {
-		this.id = id;
+	public AbstractMessage(Admin admin, String message) {
+		this.admin = admin;
 		this.message = message;
 	}
 
 	/** full constructor */
-	public AbstractMessage(MessageId id, String message, Timestamp timeCreate, Boolean isHistory,
-			Timestamp timeUpdate) {
-		this.id = id;
+	public AbstractMessage(Admin admin, String message, Timestamp timeCreate, Boolean isHistory, Timestamp timeUpdate) {
+		this.admin = admin;
 		this.message = message;
 		this.timeCreate = timeCreate;
 		this.isHistory = isHistory;
@@ -41,12 +41,20 @@ public abstract class AbstractMessage implements java.io.Serializable {
 
 	// Property accessors
 
-	public MessageId getId() {
+	public Integer getId() {
 		return this.id;
 	}
 
-	public void setId(MessageId id) {
+	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public Admin getAdmin() {
+		return this.admin;
+	}
+
+	public void setAdmin(Admin admin) {
+		this.admin = admin;
 	}
 
 	public String getMessage() {

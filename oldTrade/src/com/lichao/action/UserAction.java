@@ -7,7 +7,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import com.lichao.bean.TypesDAO;
 import com.lichao.bean.User;
+import com.lichao.bean.UserDAO;
 import com.lichao.persistence.PersistenceUser;
 import com.lichao.utill.CalendarUtil;
 import com.lichao.utill.MD5Util;
@@ -19,6 +21,7 @@ public class UserAction extends BaseAction {
 	private static final long serialVersionUID = 1L;
 
 	private PersistenceUser persistenceLayer = (PersistenceUser) mContext.getBean("persistenceUser");
+	private UserDAO userDao=(UserDAO)mContext.getBean("UserDAO");
 	private static int helloCount = 0;
 	private String authCode;
 	private User user;
@@ -56,10 +59,10 @@ public class UserAction extends BaseAction {
 	public String findById() throws Exception {
 		if (user != null) {
 			if (user.getId() != null) {
-				User userQuery = persistenceLayer.findUserById(user.getId());
+				User userQuery = userDao.findById(user.getId());
 				if (userQuery != null) {
                       userQuery.setready();
-					successMessage("更改密码成功！",userQuery);
+					successMessage("查询成功！",userQuery);
 
 				}
 			}

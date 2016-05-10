@@ -6,7 +6,6 @@ import java.util.List;
 import com.lichao.bean.Admin;
 import com.lichao.bean.Message;
 import com.lichao.bean.MessageDAO;
-import com.lichao.bean.MessageId;
 import com.lichao.bean.User;
 import com.lichao.persistence.PersistenceAdmin;
 import com.lichao.persistence.PersistenceUser;
@@ -21,6 +20,7 @@ public class AdminAction extends BaseAction {
 	private String authCode;
 	private Admin user;
 	private Message message;
+	private int authId;
 	private MessageDAO messageDao = (MessageDAO) mContext.getBean("MessageDAO");
 	private PersistenceAdmin persistenceLayer = (PersistenceAdmin) mContext.getBean("persistenceAdmin");
 	private String oldPwd;
@@ -93,8 +93,9 @@ public class AdminAction extends BaseAction {
 				}else{
 					message.setTimeCreate(new Timestamp(System.currentTimeMillis()));
 					message.setTimeUpdate(new Timestamp(System.currentTimeMillis()));
-					MessageId id=new MessageId(1,(Admin)persistenceLayer.getUserDAO().findAll().get(0));
-					message.setId(id);
+					Admin admin=new Admin();
+					admin.setId(authId);
+					message.setAdmin(admin);
 					messageDao.save(message);
 				}
 				successMessage("发布成功！");
@@ -103,6 +104,14 @@ public class AdminAction extends BaseAction {
 		return null;
 	}
 	
+	public int getAuthId() {
+		return authId;
+	}
+
+	public void setAuthId(int authId) {
+		this.authId = authId;
+	}
+
 	/**
 	 * 读取公告
 	 * @return
@@ -111,7 +120,7 @@ public class AdminAction extends BaseAction {
 	public String readNotice() throws Exception {
 		List<Message> messages=messageDao.findAll();
 		if(messages!=null && messages.size()!=0){
-			messages.get(0).setId(null);
+			messages.get(0).setAdmin(null);
 			successMessage("读取成功", messages.get(0));
 		}
 		return null;

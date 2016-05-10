@@ -76,41 +76,10 @@
             </column>
         </property>
         <property name="sex" type="java.lang.String">
-            <column name="sex" length="45">
-                <comment>性别</comment>
+            <column name="sex" length="10">
+                <comment>用户性别</comment>
             </column>
         </property>
-        <set name="commentsForIdTarget" inverse="true">
-            <key>
-                <column name="id_target" not-null="true">
-                    <comment>评论的目标用户</comment>
-                </column>
-            </key>
-            <one-to-many class="com.lichao.bean.Comment" />
-        </set>
-        <set name="goodsesForIdOwner" inverse="true">
-            <key>
-                <column name="id_owner" not-null="true">
-                    <comment>卖主id</comment>
-                </column>
-            </key>
-            <one-to-many class="com.lichao.bean.Goods" />
-        </set>
-        <set name="commentsForIdAuthor" inverse="true">
-            <key>
-                <column name="id_author" not-null="true">
-                    <comment>评论员用户id</comment>
-                </column>
-            </key>
-            <one-to-many class="com.lichao.bean.Comment" />
-        </set>
-        <set name="goodsesForIdBuyer" inverse="true">
-            <key>
-                <column name="id_buyer">
-                    <comment>购买人id</comment>
-                </column>
-            </key>
-            <one-to-many class="com.lichao.bean.Goods" />
-        </set>
+        
     </class>
 </hibernate-mapping>

@@ -127,7 +127,7 @@
        	target="<%=basePath%>jsp/admin/user.jsp";
        break;
        case 1:
-          target="<%=basePath%>jsp/admin/user.jsp";
+          target="<%=basePath%>jsp/admin/good.jsp";
        break;
        case 2:
           target="<%=basePath%>jsp/admin/type.jsp";

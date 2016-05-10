@@ -19,7 +19,6 @@ public abstract class AbstractAdmin implements java.io.Serializable {
 	private String head;
 	private Timestamp timeCreate;
 	private Timestamp timeCurrent;
-	private Set typeses = new HashSet(0);
 	private Set messages = new HashSet(0);
 
 	// Constructors
@@ -29,14 +28,13 @@ public abstract class AbstractAdmin implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public AbstractAdmin(String name, String pwd, String head, Timestamp timeCreate, Timestamp timeCurrent, Set typeses,
+	public AbstractAdmin(String name, String pwd, String head, Timestamp timeCreate, Timestamp timeCurrent,
 			Set messages) {
 		this.name = name;
 		this.pwd = pwd;
 		this.head = head;
 		this.timeCreate = timeCreate;
 		this.timeCurrent = timeCurrent;
-		this.typeses = typeses;
 		this.messages = messages;
 	}
 
@@ -88,14 +86,6 @@ public abstract class AbstractAdmin implements java.io.Serializable {
 
 	public void setTimeCurrent(Timestamp timeCurrent) {
 		this.timeCurrent = timeCurrent;
-	}
-
-	public Set getTypeses() {
-		return this.typeses;
-	}
-
-	public void setTypeses(Set typeses) {
-		this.typeses = typeses;
 	}
 
 	public Set getMessages() {

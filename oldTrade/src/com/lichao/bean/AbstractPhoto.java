@@ -9,7 +9,8 @@ public abstract class AbstractPhoto implements java.io.Serializable {
 
 	// Fields
 
-	private PhotoId id;
+	private Integer id;
+	private Goods goods;
 	private String name;
 	private String photocol;
 
@@ -20,26 +21,34 @@ public abstract class AbstractPhoto implements java.io.Serializable {
 	}
 
 	/** minimal constructor */
-	public AbstractPhoto(PhotoId id, String name) {
-		this.id = id;
+	public AbstractPhoto(Goods goods, String name) {
+		this.goods = goods;
 		this.name = name;
 	}
 
 	/** full constructor */
-	public AbstractPhoto(PhotoId id, String name, String photocol) {
-		this.id = id;
+	public AbstractPhoto(Goods goods, String name, String photocol) {
+		this.goods = goods;
 		this.name = name;
 		this.photocol = photocol;
 	}
 
 	// Property accessors
 
-	public PhotoId getId() {
+	public Integer getId() {
 		return this.id;
 	}
 
-	public void setId(PhotoId id) {
+	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public Goods getGoods() {
+		return this.goods;
+	}
+
+	public void setGoods(Goods goods) {
+		this.goods = goods;
 	}
 
 	public String getName() {

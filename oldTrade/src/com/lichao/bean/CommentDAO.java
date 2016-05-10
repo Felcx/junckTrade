@@ -66,7 +66,7 @@ public class CommentDAO {
 		}
 	}
 
-	public Comment findById(com.lichao.bean.CommentId id) {
+	public Comment findById(java.lang.Integer id) {
 		log.debug("getting Comment instance with id: " + id);
 		try {
 			Comment instance = (Comment) getCurrentSession().get("com.lichao.bean.Comment", id);

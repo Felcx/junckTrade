@@ -27,6 +27,7 @@
 		<mapping resource="com/lichao/bean/Goods.hbm.xml" />
 		<mapping resource="com/lichao/bean/Photo.hbm.xml" />
 		<mapping resource="com/lichao/bean/Types.hbm.xml" />
+		<mapping resource="com/lichao/bean/Shell.hbm.xml" />
 
 	</session-factory>
 

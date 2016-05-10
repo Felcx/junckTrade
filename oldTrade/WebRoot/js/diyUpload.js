@@ -9,11 +9,13 @@
 		*	上传方法 opt为参数配置;
 		*	serverCallBack回调函数 每个文件上传至服务端后,服务端返回参数,无论成功失败都会调用 参数为服务器返回信息;
 		*/
-        diyUpload:function( opt, serverCallBack ) {
+        diyUpload:function( opt, serverCallBack,photos ) {
  			if ( typeof opt != "object" ) {
 				alert('参数错误!');
 				return;	
 			}
+ 			
+ 			
 			
 			var $fileInput = $(this);
 			var $fileInputId = $fileInput.attr('id');
@@ -23,6 +25,8 @@
 				opt.server = opt.url; 
 				delete opt.url;
 			}
+			
+			
 			
 			if( opt.success ) {
 				var successCallBack = opt.success;
@@ -50,6 +54,7 @@
 				alert( ' 上传组件不支持您的浏览器！');
 				return false;
        		}
+			
 			
 			//绑定文件加入队列事件;
 			webUploader.on('fileQueued', function( file ) {
@@ -119,6 +124,12 @@
 				}
             	alert( text );
         	});
+			
+			if(photos){
+				for(var i=0;i<photos.length;i++){
+					photos[i];
+				}
+			}
         }
     });
 	
@@ -165,9 +176,9 @@
 			// 分片大小
 			chunkSize:512 * 1024,
 			//最大上传的文件数量, 总文件大小,单个文件大小(单位字节);
-			fileNumLimit:50,
-			fileSizeLimit:5000 * 1024,
-			fileSingleSizeLimit:500 * 1024
+			fileNumLimit:10,                 //fix by felcx
+			fileSizeLimit:20 * 1024 *1024,
+			fileSingleSizeLimit:2 * 1024 *1024
 		};
 	}
 	
@@ -204,6 +215,99 @@
 			$li.remove();
 		}
 		
+	}
+	
+	//创建文件操作div2; edit by felcx	
+	function createBox2( $fileInput, fileName, webUploader ) {
+
+		var file_id = fileName;
+		var $parentFileBox = $fileInput.next('.parentFileBox');
+		
+		//添加父系容器;
+		if ( $parentFileBox.length <= 0 ) {
+			
+			var div = '<div class="parentFileBox"> \
+						<ul class="fileBoxUl"></ul>\
+					</div>';
+			$fileInput.after( div );
+			$parentFileBox = $fileInput.next('.parentFileBox');
+		
+		}
+		
+		//创建按钮
+		if ( $parentFileBox.find('.diyButton').length <= 0 ) {
+			
+			var div = '<div class="diyButton"> \
+						<a class="diyStart" href="javascript:void(0)">开始上传</a> \
+						<a class="diyCancelAll" href="javascript:void(0)">全部取消</a> \
+					</div>';
+			$parentFileBox.append( div );
+			var $startButton = $parentFileBox.find('.diyStart');
+			var $cancelButton = $parentFileBox.find('.diyCancelAll');
+			
+			//开始上传,暂停上传,重新上传事件;
+			var uploadStart = function (){
+				webUploader.upload();
+				$startButton.text('暂停上传').one('click',function(){
+						webUploader.stop();
+						$(this).text('继续上传').one('click',function(){
+								uploadStart();
+						});
+				});
+			}
+				
+			//绑定开始上传按钮;
+			$startButton.one('click',uploadStart);
+			
+			//绑定取消全部按钮;
+			$cancelButton.bind('click',function(){
+				var fileArr = webUploader.getFiles( 'queued' );
+				$.each( fileArr ,function( i, v ){
+					removeLi( $('#fileBox_'+v.id), v.id, webUploader );
+				});
+			});
+		
+		}
+			
+		//添加子容器;
+		var li = '<li id="fileBox_'+file_id+'" class="diyUploadHover"> \
+					<div class="viewThumb"></div> \
+					<div class="diyCancel"></div> \
+					<div class="diySuccess"></div> \
+					<div class="diyFileName">'+fileName+'</div>\
+					<div class="diyBar"> \
+							<div class="diyProgress"></div> \
+							<div class="diyProgressText">0%</div> \
+					</div> \
+				</li>';
+				
+		$parentFileBox.children('.fileBoxUl').append( li );
+		
+		//父容器宽度;
+		var $width = $('.fileBoxUl>li').length * 180;
+		var $maxWidth = $fileInput.parent().width();
+		$width = $maxWidth > $width ? $width : $maxWidth;
+		$parentFileBox.width( $width );
+		
+		var $fileBox = $parentFileBox.find('#fileBox_'+file_id);
+
+		//绑定取消事件;
+		var $diyCancel = $fileBox.children('.diyCancel').one('click',function(){
+			removeLi( $(this).parent('li'), file_id, webUploader );	
+		});
+		
+		if ( file.type.split("/")[0] != 'image' ) {
+			var liClassName = getFileTypeClassName( file.name.split(".").pop() );
+			$fileBox.addClass(liClassName);
+			return;	
+		}
+		
+		//生成预览缩略图;
+		webUploader.makeThumb( file, function( error, dataSrc ) {
+			if ( !error ) {	
+				$fileBox.find('.viewThumb').append('<img src="'+dataSrc+'" >');
+			}
+		});	
 	}
 	
 	//创建文件操作div;	

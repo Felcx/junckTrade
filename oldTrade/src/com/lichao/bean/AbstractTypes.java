@@ -17,7 +17,7 @@ public abstract class AbstractTypes implements java.io.Serializable {
 	private String name;
 	private Timestamp timeCreate;
 	private Integer isShowFirst;
-	private Set goodses = new HashSet(0);
+	private transient Set goodses = new HashSet(0);
 
 	// Constructors
 

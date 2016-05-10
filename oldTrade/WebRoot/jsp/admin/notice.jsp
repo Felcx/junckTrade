@@ -12,26 +12,25 @@
 	<textarea rows="10" id="textarea" cols="60">
           
     </textarea> 
-	<button type="button" onclick="addNew();" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">发布</button>
+	<button type="button" onclick="addNew('<s:property value="#session.admin.id" />');" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">发布</button>
 </body>
 <script type="text/javascript">
 
 
-function addNew(){
+function addNew(id){
   var text=$.trim($("#textarea").val());
   if(text.length>0){
-  alert(text);
      $.ajax({
 					type : "POST",
 					url :"<%=basePath %>noticeAdmin",
 					async:true,
-					data:{"message.message":text},
+					data:{"authId":id,"message.message":text},
 					dataType : "json",
 					success : function(data) {
 						if(data){
 							var b = eval(data); //转换为对象
 							if(b.code==0 ){
-							  window.location.reload(); 
+							  alert("保存成功！");
 							}else {
 							  alert(b.message);
 							}

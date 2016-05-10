@@ -28,10 +28,12 @@ public abstract class AbstractUser implements java.io.Serializable {
 	private String realName;
 	private String address;
 	private String sex;
-	private Set commentsForIdTarget = new HashSet(0);
-	private Set goodsesForIdOwner = new HashSet(0);
-	private Set commentsForIdAuthor = new HashSet(0);
-	private Set goodsesForIdBuyer = new HashSet(0);
+	private transient Set commentsForIdTarget = new HashSet(0);
+	private transient Set goodsesForIdOwner = new HashSet(0);
+	private transient Set commentsForIdAuthor = new HashSet(0);
+	private transient Set goodsesForIdBuyer = new HashSet(0);
+	private transient Set shellsForIdBuy = new HashSet(0);
+	private transient Set shellsForIdSell = new HashSet(0);
 
 	// Constructors
 
@@ -48,8 +50,8 @@ public abstract class AbstractUser implements java.io.Serializable {
 	/** full constructor */
 	public AbstractUser(String name, String pwd, String phone, String head, Timestamp timeCreate, Timestamp timeCurrent,
 			Integer rangeSell, Integer rangeBuy, Integer power, String bankCard, String email, String realName,
-			String address, Set commentsForIdTarget, Set goodsesForIdOwner, Set commentsForIdAuthor,
-			Set goodsesForIdBuyer) {
+			String address, String sex, Set commentsForIdTarget, Set goodsesForIdOwner, Set commentsForIdAuthor,
+			Set goodsesForIdBuyer, Set shellsForIdBuy, Set shellsForIdSell) {
 		this.name = name;
 		this.pwd = pwd;
 		this.phone = phone;
@@ -63,10 +65,13 @@ public abstract class AbstractUser implements java.io.Serializable {
 		this.email = email;
 		this.realName = realName;
 		this.address = address;
+		this.sex = sex;
 		this.commentsForIdTarget = commentsForIdTarget;
 		this.goodsesForIdOwner = goodsesForIdOwner;
 		this.commentsForIdAuthor = commentsForIdAuthor;
 		this.goodsesForIdBuyer = goodsesForIdBuyer;
+		this.shellsForIdBuy = shellsForIdBuy;
+		this.shellsForIdSell = shellsForIdSell;
 	}
 
 	// Property accessors
@@ -183,6 +188,14 @@ public abstract class AbstractUser implements java.io.Serializable {
 		this.address = address;
 	}
 
+	public String getSex() {
+		return this.sex;
+	}
+
+	public void setSex(String sex) {
+		this.sex = sex;
+	}
+
 	public Set getCommentsForIdTarget() {
 		return this.commentsForIdTarget;
 	}
@@ -215,22 +228,20 @@ public abstract class AbstractUser implements java.io.Serializable {
 		this.goodsesForIdBuyer = goodsesForIdBuyer;
 	}
 
-	@Override
-	public String toString() {
-		return "AbstractUser [id=" + id + ", name=" + name + ", pwd=" + pwd + ", phone=" + phone + ", head=" + head
-				+ ", timeCreate=" + timeCreate + ", timeCurrent=" + timeCurrent + ", rangeSell=" + rangeSell
-				+ ", rangeBuy=" + rangeBuy + ", power=" + power + ", bankCard=" + bankCard + ", email=" + email
-				+ ", realName=" + realName + ", address=" + address + ", commentsForIdTarget=" + commentsForIdTarget
-				+ ", goodsesForIdOwner=" + goodsesForIdOwner + ", commentsForIdAuthor=" + commentsForIdAuthor
-				+ ", goodsesForIdBuyer=" + goodsesForIdBuyer + "]";
+	public Set getShellsForIdBuy() {
+		return this.shellsForIdBuy;
 	}
 
-	public String getSex() {
-		return sex;
+	public void setShellsForIdBuy(Set shellsForIdBuy) {
+		this.shellsForIdBuy = shellsForIdBuy;
 	}
 
-	public void setSex(String sex) {
-		this.sex = sex;
+	public Set getShellsForIdSell() {
+		return this.shellsForIdSell;
+	}
+
+	public void setShellsForIdSell(Set shellsForIdSell) {
+		this.shellsForIdSell = shellsForIdSell;
 	}
 
 }

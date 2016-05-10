@@ -13,7 +13,9 @@ public abstract class AbstractGoods implements java.io.Serializable {
 
 	// Fields
 
-	private GoodsId id;
+	private Integer id;
+	private User userByIdOwner;
+	private Types types;
 	private User userByIdBuyer;
 	private String name;
 	private Timestamp timeCreate;
@@ -34,16 +36,18 @@ public abstract class AbstractGoods implements java.io.Serializable {
 	}
 
 	/** minimal constructor */
-	public AbstractGoods(GoodsId id, String name) {
-		this.id = id;
+	public AbstractGoods(User userByIdOwner, Types types, String name) {
+		this.userByIdOwner = userByIdOwner;
+		this.types = types;
 		this.name = name;
 	}
 
 	/** full constructor */
-	public AbstractGoods(GoodsId id, User userByIdBuyer, String name, Timestamp timeCreate, Integer timeCanUser,
-			Double price, Double priceNew, String description, Integer state, Integer rangeOld, String class_,
-			String goodscol, Set photos) {
-		this.id = id;
+	public AbstractGoods(User userByIdOwner, Types types, User userByIdBuyer, String name, Timestamp timeCreate,
+			Integer timeCanUser, Double price, Double priceNew, String description, Integer state, Integer rangeOld,
+			String class_, String goodscol, Set photos) {
+		this.userByIdOwner = userByIdOwner;
+		this.types = types;
 		this.userByIdBuyer = userByIdBuyer;
 		this.name = name;
 		this.timeCreate = timeCreate;
@@ -60,12 +64,28 @@ public abstract class AbstractGoods implements java.io.Serializable {
 
 	// Property accessors
 
-	public GoodsId getId() {
+	public Integer getId() {
 		return this.id;
 	}
 
-	public void setId(GoodsId id) {
+	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public User getUserByIdOwner() {
+		return this.userByIdOwner;
+	}
+
+	public void setUserByIdOwner(User userByIdOwner) {
+		this.userByIdOwner = userByIdOwner;
+	}
+
+	public Types getTypes() {
+		return this.types;
+	}
+
+	public void setTypes(Types types) {
+		this.types = types;
 	}
 
 	public User getUserByIdBuyer() {

@@ -12,13 +12,13 @@ public class Photo extends AbstractPhoto implements java.io.Serializable {
 	}
 
 	/** minimal constructor */
-	public Photo(PhotoId id, String name) {
-		super(id, name);
+	public Photo(Goods goods, String name) {
+		super(goods, name);
 	}
 
 	/** full constructor */
-	public Photo(PhotoId id, String name, String photocol) {
-		super(id, name, photocol);
+	public Photo(Goods goods, String name, String photocol) {
+		super(goods, name, photocol);
 	}
 
 }

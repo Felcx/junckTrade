@@ -6,17 +6,20 @@
 -->
 <hibernate-mapping>
     <class name="com.lichao.bean.Comment" table="comment" catalog="junktrade">
-        <composite-id name="id" class="com.lichao.bean.CommentId">
-            <key-property name="id" type="java.lang.Integer">
-                <column name="id" />
-            </key-property>
-            <key-many-to-one name="user" class="com.lichao.bean.User">
-                <column name="id_author" />
-            </key-many-to-one>
-            <key-many-to-one name="user_1" class="com.lichao.bean.User">
-                <column name="id_target" />
-            </key-many-to-one>
-        </composite-id>
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="userByIdTarget" class="com.lichao.bean.User" fetch="select">
+            <column name="id_target" not-null="true">
+                <comment>评论的目标用户</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="userByIdAuthor" class="com.lichao.bean.User" fetch="select">
+            <column name="id_author" not-null="true">
+                <comment>评论员用户id</comment>
+            </column>
+        </many-to-one>
         <property name="message" type="java.lang.String">
             <column name="message" length="65535" not-null="true" />
         </property>

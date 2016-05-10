@@ -3,17 +3,14 @@ package com.lichao.bean;
 import java.sql.Timestamp;
 import java.util.Set;
 
-import org.apache.logging.log4j.core.util.SetUtils;
-
 import com.lichao.utill.CalendarUtil;
 
 /**
  * User entity. @author MyEclipse Persistence Tools
  */
-public class User extends AbstractUser implements java.io.Serializable, Cloneable {
+public class User extends AbstractUser implements java.io.Serializable {
 
 	// Constructors
-
 	private String currentLogin;
 	private String currentCreate;
 	private String rangeBuyCn;
@@ -21,6 +18,7 @@ public class User extends AbstractUser implements java.io.Serializable, Cloneabl
 	private String powerCn;
 	public transient static String[] rangeBuys={" ","青铜","白银","黄金","钻石"};
 	public transient static String[] powers={" ","可买卖","只可买","只可卖","功能被限制"};
+
 	/** default constructor */
 	public User() {
 	}
@@ -33,11 +31,9 @@ public class User extends AbstractUser implements java.io.Serializable, Cloneabl
 	/** full constructor */
 	public User(String name, String pwd, String phone, String head, Timestamp timeCreate, Timestamp timeCurrent,
 			Integer rangeSell, Integer rangeBuy, Integer power, String bankCard, String email, String realName,
-			String address, Set commentsForIdTarget, Set goodsesForIdOwner, Set commentsForIdAuthor,
-			Set goodsesForIdBuyer) {
-		super(name, pwd, phone, head, timeCreate, timeCurrent, rangeSell, rangeBuy, power, bankCard, email, realName,
-				address, commentsForIdTarget, goodsesForIdOwner, commentsForIdAuthor, goodsesForIdBuyer);
-		
+			String address,String sex, Set commentsForIdTarget, Set goodsesForIdOwner, Set commentsForIdAuthor,
+			Set goodsesForIdBuyer, Set shellsForIdBuy, Set shellsForIdSell) {
+		super(name, pwd, phone, head, timeCreate, timeCurrent, rangeSell, rangeBuy, power, bankCard, email, realName, address, sex, commentsForIdTarget, goodsesForIdOwner, commentsForIdAuthor, goodsesForIdBuyer, shellsForIdBuy, shellsForIdSell);
 	}
 	
 	/**
@@ -48,6 +44,8 @@ public class User extends AbstractUser implements java.io.Serializable, Cloneabl
 		setCommentsForIdTarget(null);
 		setGoodsesForIdBuyer(null);
 		setGoodsesForIdOwner(null);
+		setShellsForIdBuy(null);
+		setShellsForIdSell(null);
 		setRangeBuyCn();
 		setRangeSellCn();
 		setCurrentLogin();

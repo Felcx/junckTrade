@@ -6,14 +6,15 @@
 -->
 <hibernate-mapping>
     <class name="com.lichao.bean.Message" table="message" catalog="junktrade">
-        <composite-id name="id" class="com.lichao.bean.MessageId">
-            <key-property name="id" type="java.lang.Integer">
-                <column name="id" />
-            </key-property>
-            <key-many-to-one name="admin" class="com.lichao.bean.Admin">
-                <column name="id_author" />
-            </key-many-to-one>
-        </composite-id>
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="admin" class="com.lichao.bean.Admin" lazy="false" fetch="select">
+            <column name="id_author" not-null="true">
+                <comment>发布员id</comment>
+            </column>
+        </many-to-one>
         <property name="message" type="java.lang.String">
             <column name="message" length="65535" not-null="true" />
         </property>

@@ -65,7 +65,7 @@ public class PhotoDAO {
 		}
 	}
 
-	public Photo findById(com.lichao.bean.PhotoId id) {
+	public Photo findById(java.lang.Integer id) {
 		log.debug("getting Photo instance with id: " + id);
 		try {
 			Photo instance = (Photo) getCurrentSession().get("com.lichao.bean.Photo", id);

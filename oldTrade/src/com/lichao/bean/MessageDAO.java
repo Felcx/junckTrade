@@ -66,7 +66,7 @@ public class MessageDAO {
 		}
 	}
 
-	public Message findById(com.lichao.bean.MessageId id) {
+	public Message findById(java.lang.Integer id) {
 		log.debug("getting Message instance with id: " + id);
 		try {
 			Message instance = (Message) getCurrentSession().get("com.lichao.bean.Message", id);

@@ -18,7 +18,7 @@
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="javascript:void(0);">物物旧货交易网-用户中心</a>
+				<a class="navbar-brand" href="<%=basePath%>index.jsp">物物旧货交易网-用户中心</a>
 			</div>
 			<div id="navbar" class="collapse navbar-collapse">
 				<ul class="nav navbar-nav">
@@ -49,7 +49,6 @@
          <div class="embed-responsive embed-responsive-16by9"> 
               <iframe id="manFrame" class="embed-responsive-item" src="<%=basePath%>jsp/user_info.jsp"></iframe>
          </div>
-          
         </div>
       </div>
     </div>
@@ -84,9 +83,9 @@
 }
   
   function showPwd(id){
-   var html='原始密码：<input id="srcPwd"/><br/>'
-           +'新的密码：<input id="newPwd"/><br/>'
-           +'重复密码：<input id="newRePwd"/>';
+   var html='原始密码：<input id="srcPwd" type="password"/><br/>'
+           +'新的密码：<input  id="newPwd" type="password"/><br/>'
+           +'重复密码：<input id="newRePwd" type="password"/>';
        
    var d = dialog({
     title: '修改密码',

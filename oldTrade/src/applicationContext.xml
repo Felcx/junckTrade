@@ -69,4 +69,8 @@
 			<ref bean="sessionFactory" />
 		</property>
 	</bean>
-	</beans>
+	<bean id="ShellDAO" class="com.lichao.bean.ShellDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean></beans>

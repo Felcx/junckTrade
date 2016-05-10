@@ -66,7 +66,7 @@ function delUser(id){
 function query(pageNo,pageSize){         //请求数据
           $.ajax({
 					type : "POST",
-					url :"<%=basePath %>queryAllBySizeTypes",
+					url :"<%=basePath %>queryAllBySizeGoods",
 					async:true,
 					data:{"pageNo":pageNo , "pageSize":pageSize},
 					dataType : "json",
@@ -79,9 +79,13 @@ function query(pageNo,pageSize){         //请求数据
 					           for(var i=0;i<b.dataset.length;i++){
 					               $("#dataCotain").append("<tr>"
 					               +"<td>"+b.dataset[i].name+"</td>"
+					               +"<td>"+b.dataset[i].priceNew+"</td>"
+					               +"<td>"+b.dataset[i].currentType+"</td>"
+					               +"<td>"+b.dataset[i].currentState+"</td>"
 					               +"<td>"+b.dataset[i].currentCreate+"</td>"
 					               +"<td>"
-					               +"<a href='javascript:void(0);' onclick='delUser("+b.dataset[i].id+")'>删除类型"+"</a>"
+					               +"<a href='<%=basePath%>jsp/goods_new.jsp?goodId="+b.dataset[i].id+"'>修改&nbsp;&nbsp;&nbsp;</a>"
+					               +"<a href='javascript:void(0);' onclick='delUser("+b.dataset[i].id+")'>删除"+"</a>"
 					               +"</td>"
 					               +"</tr>"
 					               );
@@ -105,7 +109,7 @@ $(document).ready(function(){
    
 	var pageNo=1;
 	var pageSize=10;
-	//query(pageNo, pageSize);
+	query(pageNo, pageSize);
 });
 
 

@@ -74,7 +74,7 @@ public class GoodsDAO {
 		}
 	}
 
-	public Goods findById(com.lichao.bean.GoodsId id) {
+	public Goods findById(java.lang.Integer id) {
 		log.debug("getting Goods instance with id: " + id);
 		try {
 			Goods instance = (Goods) getCurrentSession().get("com.lichao.bean.Goods", id);
@@ -195,5 +195,17 @@ public class GoodsDAO {
 
 	public static GoodsDAO getFromApplicationContext(ApplicationContext ctx) {
 		return (GoodsDAO) ctx.getBean("GoodsDAO");
+	}
+	
+	public List findBySize(int pageNo,int pageSize){
+		try {
+			Query queryObject = getCurrentSession().createQuery("from Goods ");
+			queryObject.setFirstResult(pageNo*pageSize);
+			queryObject.setMaxResults(pageSize);
+			return queryObject.list();
+		} catch (RuntimeException re) {
+			log.error("find by property name failed", re);
+			throw re;
+		}
 	}
 }

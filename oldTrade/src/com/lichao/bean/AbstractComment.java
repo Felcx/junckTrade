@@ -11,7 +11,9 @@ public abstract class AbstractComment implements java.io.Serializable {
 
 	// Fields
 
-	private CommentId id;
+	private Integer id;
+	private User userByIdTarget;
+	private User userByIdAuthor;
 	private String message;
 	private Boolean isHistory;
 	private Timestamp timeCreate;
@@ -24,16 +26,18 @@ public abstract class AbstractComment implements java.io.Serializable {
 	}
 
 	/** minimal constructor */
-	public AbstractComment(CommentId id, String message, Boolean isHistory) {
-		this.id = id;
+	public AbstractComment(User userByIdTarget, User userByIdAuthor, String message, Boolean isHistory) {
+		this.userByIdTarget = userByIdTarget;
+		this.userByIdAuthor = userByIdAuthor;
 		this.message = message;
 		this.isHistory = isHistory;
 	}
 
 	/** full constructor */
-	public AbstractComment(CommentId id, String message, Boolean isHistory, Timestamp timeCreate,
-			Timestamp timeUpdate) {
-		this.id = id;
+	public AbstractComment(User userByIdTarget, User userByIdAuthor, String message, Boolean isHistory,
+			Timestamp timeCreate, Timestamp timeUpdate) {
+		this.userByIdTarget = userByIdTarget;
+		this.userByIdAuthor = userByIdAuthor;
 		this.message = message;
 		this.isHistory = isHistory;
 		this.timeCreate = timeCreate;
@@ -42,12 +46,28 @@ public abstract class AbstractComment implements java.io.Serializable {
 
 	// Property accessors
 
-	public CommentId getId() {
+	public Integer getId() {
 		return this.id;
 	}
 
-	public void setId(CommentId id) {
+	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public User getUserByIdTarget() {
+		return this.userByIdTarget;
+	}
+
+	public void setUserByIdTarget(User userByIdTarget) {
+		this.userByIdTarget = userByIdTarget;
+	}
+
+	public User getUserByIdAuthor() {
+		return this.userByIdAuthor;
+	}
+
+	public void setUserByIdAuthor(User userByIdAuthor) {
+		this.userByIdAuthor = userByIdAuthor;
 	}
 
 	public String getMessage() {

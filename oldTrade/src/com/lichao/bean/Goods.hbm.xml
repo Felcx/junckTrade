@@ -6,17 +6,20 @@
 -->
 <hibernate-mapping>
     <class name="com.lichao.bean.Goods" table="goods" catalog="junktrade">
-        <composite-id name="id" class="com.lichao.bean.GoodsId">
-            <key-property name="id" type="java.lang.Integer">
-                <column name="id" />
-            </key-property>
-            <key-many-to-one name="user" class="com.lichao.bean.User">
-                <column name="id_owner" />
-            </key-many-to-one>
-            <key-many-to-one name="types" class="com.lichao.bean.Types">
-                <column name="id_type" />
-            </key-many-to-one>
-        </composite-id>
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+           
+        </id>
+        <many-to-one name="userByIdOwner" class="com.lichao.bean.User" fetch="select" lazy="false">
+            <column name="id_owner" not-null="true">
+                <comment>卖主id</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="types" class="com.lichao.bean.Types" fetch="select" lazy="false">
+            <column name="id_type" not-null="true">
+                <comment>类型id</comment>
+            </column>
+        </many-to-one>
         <many-to-one name="userByIdBuyer" class="com.lichao.bean.User" fetch="select">
             <column name="id_buyer">
                 <comment>购买人id</comment>
@@ -70,13 +73,6 @@
         <property name="goodscol" type="java.lang.String">
             <column name="goodscol" length="45" />
         </property>
-        <set name="photos" inverse="true">
-            <key>
-                <column name="goods_id" not-null="true" />
-                <column name="goods_id_owner" not-null="true" />
-                <column name="goods_id_type" not-null="true" />
-            </key>
-            <one-to-many class="com.lichao.bean.Photo" />
-        </set>
+        
     </class>
 </hibernate-mapping>

@@ -28,17 +28,25 @@ public class BaseAction extends ActionSupport implements SessionAware,ParameterN
     public static enum enumSession{
     	user,admin
     }
-    
+    private void clearMsg(){
+    	mMessage.setCode("0");
+    	mMessage.setCount(0);
+    	mMessage.setDataset(null);
+    	mMessage.setMessage("");
+    	mMessage.setTotalCount("0");
+    }
     public void errorMessage(String msg){
 		mMessage.setMessage(msg);
 		mMessage.setCode("-1");
 		returnMapJson();
+		clearMsg();
 	}
     
     public void successMessage(String msg){
 		mMessage.setMessage(msg);
 		mMessage.setCode("0");
 		returnMapJson();
+		clearMsg();
 	}
     
     public void successMessage(String msg,Object dataSet){
@@ -46,6 +54,7 @@ public class BaseAction extends ActionSupport implements SessionAware,ParameterN
 		mMessage.setCode("0");
 		mMessage.setDataset(dataSet);
 		returnMapJson();
+		clearMsg();
 	}
     
     /**
