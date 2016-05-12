@@ -1,6 +1,7 @@
 package com.lichao.bean;
 
 import java.sql.Timestamp;
+import java.util.HashSet;
 import java.util.Set;
 
 import com.lichao.utill.CalendarUtil;
@@ -41,7 +42,7 @@ public class Goods extends AbstractGoods implements java.io.Serializable {
 	 * 设置4个set为空，不然转json时有问题
 	 */
 	public void setready(){
-		setPhotos(null);
+		setPhotos(new HashSet<String>());
 		setCurrentCreate();
 		setCurrentState();
 		setCurrentType();

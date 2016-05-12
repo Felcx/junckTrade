@@ -77,6 +77,7 @@ function query(pageNo,pageSize){         //请求数据
 							$("#dataCotain").empty();
 					        if(b.dataset.length>0){
 					           for(var i=0;i<b.dataset.length;i++){
+					            if(b.dataset[i].userByIdOwner.id=='<s:property value="#session.user.id" />'){
 					               $("#dataCotain").append("<tr>"
 					               +"<td>"+b.dataset[i].name+"</td>"
 					               +"<td>"+b.dataset[i].priceNew+"</td>"
@@ -89,7 +90,7 @@ function query(pageNo,pageSize){         //请求数据
 					               +"</td>"
 					               +"</tr>"
 					               );
-					               
+					               }
 					           }
 					        }		
 							

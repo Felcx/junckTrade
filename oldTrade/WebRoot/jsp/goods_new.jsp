@@ -36,7 +36,7 @@
 	</h2>
 	<div class="container">
 		<p class="text-left">
-			<a href="<%=basePath %>jsp/manager_shell.jsp" class="navbar-left"
+			<a id="goback" href="<%=basePath %>jsp/manager_shell.jsp" class="navbar-left"
 				style="font-size:1.2em; margin-bottom: 10px;margin-right: 10px">
 				<span class="glyphicon glyphicon-arrow-left"
 				style="margin-right: 4px" aria-hidden="true"></span>返回
@@ -47,7 +47,7 @@
 		</div>
 		
 		
-		<p class="text-center" style="margin-top: 32px">上传图片:</p>
+		<p class="text-center" id="boxText" style="margin-top: 32px">上传图片:</p>
 		<div class="row">
 			<div id="box">
 				<div id="test"></div>
@@ -125,7 +125,7 @@
 
 		<div calss="row">
 			<p class="text-center" style="margin-top:32px">
-				<button type="button"
+				<button type="button" id="buttonSumit"
 					onclick="update('<s:property value="#session.user.id" />')"
 					style="width: 300px" class="btn btn-success btn-lg">提交</button>
 		</div>
@@ -135,11 +135,13 @@
 var goodsId;
 var userId='<s:property value="#session.user.id" />';
 var hasPhoto=false;
-
+var typeSee='<%=request.getParameter("type")%>';
 
 
 $(document).ready(function(){
    var requestId=<%=request.getParameter("goodId")%>;
+   
+   
    if(requestId){
      goodsId=requestId;
      display(goodsId);
@@ -149,6 +151,8 @@ $(document).ready(function(){
      goodsId=Math.floor((new Date()).valueOf()/1000);
     
    }
+   if(typeSee!='see'){
+    
     $('#test').diyUpload({
 	url:"<%=basePath %>uploadFileGoods?goodsId="+goodsId+"&userId="+userId,
 	success:function( data ) {
@@ -159,6 +163,12 @@ $(document).ready(function(){
 		console.info( err );	
 	}
     });
+    }else{
+      $("#box").hide();
+      $("#buttonSumit").hide();
+      $("#boxText").hide();
+      $("#goback").attr({href:"<%=basePath %>jsp/admin/good.jsp"});
+    }
 	query();
 	
 	
@@ -169,7 +179,15 @@ var box='';
   if(index==0){
     box+='<p class="text-center" style="margin-top: 32px">商品图片:</p>';
    }
+   if(typeSee =='see'){
   box=box+'<div class="col-sm-6 col-md-4">'
+   +'<div class="thumbnail">'
+   +'<img data-holder-rendered="true" src="<%=basePath%>upload/'+imgSrc+'" style="width:auto!important;height:200px!important; display: block;" data-src="holder.js/100%x200" alt="人家是图">'
+   
+   +'</div>'
+   +'</div>';}
+   else{
+    box=box+'<div class="col-sm-6 col-md-4">'
    +'<div class="thumbnail">'
    +'<img data-holder-rendered="true" src="<%=basePath%>upload/'+imgSrc+'" style="width:auto!important;height:200px!important; display: block;" data-src="holder.js/100%x200" alt="人家是图">'
    +'<div class="caption">'
@@ -177,6 +195,7 @@ var box='';
    +'</div>'
    +'</div>'
    +'</div>';
+   }
   return box;
 }
 
