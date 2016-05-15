@@ -25,6 +25,7 @@ public class UserAction extends BaseAction {
 	private static int helloCount = 0;
 	private String authCode;
 	private User user;
+	private int range;
 	private String oldPwd;
 	private int pageNo;
 	private int pageSize;
@@ -50,6 +51,10 @@ public class UserAction extends BaseAction {
 		return SUCCESS;
 	}
 
+	
+	
+	
+	
 	/**
 	 * 根据id查询用户信息
 	 * 
@@ -139,6 +144,47 @@ public class UserAction extends BaseAction {
 					userQuery.setPower(user.getPower());
 					persistenceLayer.updateUser(userQuery);
 					successMessage("更新成功！");
+				}
+			}
+		}
+		return null;
+	}
+	
+	
+	/**
+	 * 评价卖家
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public String howSell() throws Exception {
+		if (user != null) {
+			if (user.getId() != null) {
+				User userQuery = persistenceLayer.findUserById(user.getId());
+				if (userQuery != null) {
+					userQuery.setRangeSell(userQuery.getRangeSell()+range);
+					persistenceLayer.updateUser(userQuery);
+					successMessage("评价成功！");
+				}
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * 评价买家
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public String howBuy() throws Exception {
+		if (user != null) {
+			if (user.getId() != null) {
+				User userQuery = persistenceLayer.findUserById(user.getId());
+				if (userQuery != null) {
+					userQuery.setRangeBuy(userQuery.getRangeBuy()+range);
+					persistenceLayer.updateUser(userQuery);
+					successMessage("评价成功！");
 				}
 			}
 		}
@@ -316,6 +362,14 @@ public class UserAction extends BaseAction {
 
 	public void setOldPwd(String oldPwd) {
 		this.oldPwd = oldPwd;
+	}
+
+	public int getRange() {
+		return range;
+	}
+
+	public void setRange(int range) {
+		this.range = range;
 	}
 
 }

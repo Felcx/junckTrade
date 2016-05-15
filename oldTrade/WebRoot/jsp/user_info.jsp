@@ -47,7 +47,7 @@
 	       <div class="col-xs-3 col-md-3"><input id="sex" class="form-control" /></div>
 	    </div>
 	    <div calss="row">
-	    <p class="text-center" style="margin-top:32px"><button type="button" style="width: 300px" onclick="update('<s:property value="#session.user.id" />');" class="btn btn-success btn-lg">提交</button>
+	    <p class="text-center" style="margin-top:32px"><button type="button" id="sumit" style="width: 300px" onclick="update('<s:property value="#session.user.id" />');" class="btn btn-success btn-lg">提交</button>
 	    </div>
 	</div>
 </body>
@@ -117,8 +117,14 @@
     }
 
 $(document).ready(function(){
-   
+   var requestId=<%=request.getParameter("userid")%>;
+   if(requestId){
+    query(requestId);
+    $("#sumit").text("返回");
+    $("#sumit").click( function () { window.location.href="<%=basePath %>jsp/manager_shell.jsp"; });
+   }else{
 	query('<s:property value="#session.user.id" />');
+	}
 });
 
 </script>

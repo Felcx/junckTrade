@@ -41,7 +41,7 @@
           <ul class="nav nav-sidebar" id="items">
             <li class="active" ><a href="javascript:void(0);"><span class="glyphicon glyphicon-user" style="margin-right: 4px" aria-hidden="true"></span>个人信息 <span class="sr-only">(current)</span></a></li>
             <li ><a href="javascript:void(0);"><span class="glyphicon glyphicon-blackboard" style="margin-right: 4px" aria-hidden="true"></span>商品管理</a></li>
-            <li ><a href="javascript:void(0);"><span class="glyphicon glyphicon-equalizer" style="margin-right: 4px" aria-hidden="true"></span>购物管理</a></li>
+            <li ><a href="javascript:void(0);"><span class="glyphicon glyphicon-equalizer" style="margin-right: 4px" aria-hidden="true"></span>购物车</a></li>
           </ul>
           
         </div>

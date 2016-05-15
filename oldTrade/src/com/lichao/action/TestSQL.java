@@ -16,9 +16,9 @@ public class TestSQL  extends BaseAction{
 	
 	
 	public static void main(String[] args) { 
-		userTest();
+		//userTest();
        // adminTest();
-         
+         System.out.println(1/10);
     } 
 	
 	private static void adminTest(){

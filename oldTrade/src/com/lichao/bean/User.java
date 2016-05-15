@@ -16,7 +16,7 @@ public class User extends AbstractUser implements java.io.Serializable {
 	private String rangeBuyCn;
 	private String rangeSellCn;
 	private String powerCn;
-	public transient static String[] rangeBuys={" ","青铜","白银","黄金","钻石"};
+	public transient static String[] rangeBuys={"青铜","白银","黄金","钻石"};
 	public transient static String[] powers={" ","可买卖","只可买","只可卖","功能被限制"};
 
 	/** default constructor */
@@ -86,8 +86,12 @@ public class User extends AbstractUser implements java.io.Serializable {
 		return rangeBuyCn;
 	}
 
-	public void setRangeBuyCn() {
-		this.rangeBuyCn = rangeBuys[getRangeBuy()];
+	public void setRangeBuyCn() {         //1-9为青铜，10-19为白银，20-29为黄金，30以上为钻石
+		if(getRangeBuy()>=40){
+			this.rangeBuyCn = rangeBuys[3];
+		}else{
+		this.rangeBuyCn = rangeBuys[getRangeBuy()/10];
+		}
 	}
 
 	public String getRangeSellCn() {
@@ -95,7 +99,11 @@ public class User extends AbstractUser implements java.io.Serializable {
 	}
 
 	public void setRangeSellCn() {
-		this.rangeSellCn = rangeBuys[getRangeSell()];
+		if(getRangeBuy()>=40){
+			this.rangeSellCn = rangeBuys[3];
+		}else{
+		this.rangeSellCn = rangeBuys[getRangeSell()/10];
+		}
 	}
 
 	public String getPowerCn() {
