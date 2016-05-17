@@ -7,6 +7,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import com.lichao.bean.Goods;
+import com.lichao.bean.GoodsDAO;
 import com.lichao.bean.TypesDAO;
 import com.lichao.bean.User;
 import com.lichao.bean.UserDAO;
@@ -22,8 +24,10 @@ public class UserAction extends BaseAction {
 
 	private PersistenceUser persistenceLayer = (PersistenceUser) mContext.getBean("persistenceUser");
 	private UserDAO userDao=(UserDAO)mContext.getBean("UserDAO");
+	private GoodsDAO goodDao=(GoodsDAO)mContext.getBean("GoodsDAO");
 	private static int helloCount = 0;
 	private String authCode;
+	private int goodId;
 	private User user;
 	private int range;
 	private String oldPwd;
@@ -164,6 +168,13 @@ public class UserAction extends BaseAction {
 				if (userQuery != null) {
 					userQuery.setRangeSell(userQuery.getRangeSell()+range);
 					persistenceLayer.updateUser(userQuery);
+					Goods good=goodDao.findById(goodId);
+					if(good.getState()==7){      //如果是收货状态
+						good.setState(9);        //买家已评价
+					}else if(good.getState()==8){ //如果卖家已评价
+						good.setState(10);       //双方已评价
+					}
+					goodDao.merge(good);
 					successMessage("评价成功！");
 				}
 			}
@@ -184,6 +195,13 @@ public class UserAction extends BaseAction {
 				if (userQuery != null) {
 					userQuery.setRangeBuy(userQuery.getRangeBuy()+range);
 					persistenceLayer.updateUser(userQuery);
+					Goods good=goodDao.findById(goodId);
+					if(good.getState()==7){      //如果是收货状态
+						good.setState(8);        //买家已评价
+					}else if(good.getState()==9){ //如果卖家已评价
+						good.setState(10);       //双方已评价
+					}
+					goodDao.merge(good);
 					successMessage("评价成功！");
 				}
 			}
@@ -370,6 +388,14 @@ public class UserAction extends BaseAction {
 
 	public void setRange(int range) {
 		this.range = range;
+	}
+
+	public int getGoodId() {
+		return goodId;
+	}
+
+	public void setGoodId(int goodId) {
+		this.goodId = goodId;
 	}
 
 }

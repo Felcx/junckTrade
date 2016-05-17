@@ -18,7 +18,7 @@ public class Goods extends AbstractGoods implements java.io.Serializable {
 		private String currentCreate;
 		private String currentState;
 		private String currentType;
-		public transient static String[] statesStr={"","上架","下架","被限制","已预订","已付款","已发货","已收货","已评价"};
+		public transient static String[] statesStr={"","上架","下架","被限制","已预订","已付款","已发货","已收货","卖家已评价","买家已评价","双方已评价"};
 		/** default constructor */
 
 	/** default constructor */

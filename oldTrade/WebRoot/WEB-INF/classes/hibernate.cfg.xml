@@ -20,6 +20,11 @@
 		<property name="connection.driver_class">
 			com.mysql.jdbc.Driver
 		</property>
+		<!-- JDBC connection pool (use the built-in) -->
+
+
+        <!-- Echo all executed SQL to stdout -->
+        <property name="show_sql">false</property>
 		<mapping resource="com/lichao/bean/Admin.hbm.xml" />
 		<mapping resource="com/lichao/bean/User.hbm.xml" />
 		<mapping resource="com/lichao/bean/Comment.hbm.xml" />

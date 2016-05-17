@@ -107,12 +107,12 @@ function getIt(id){
   }
 }
 
-function postSell(id,power){
+function postSell(id,power,goodId){
     $.ajax({
 					type : "POST",
 					url :"<%=basePath %>howSellUser",
 					async:true,
-					data:{"user.id":id,"range":power},
+					data:{"user.id":id,"range":power,"goodId":goodId},
 					dataType : "json",
 					success : function(data) {
 						if(data){
@@ -130,7 +130,7 @@ function postSell(id,power){
 	});
 }
 
-function howSell(id){
+function howSell(id,goodId){
   var powers=["5星","4星","3星","2星","1星"];
    var html='<select id="powerSelect">'
              +'<option value="5">'+powers[0]+'</option>'
@@ -146,7 +146,7 @@ function howSell(id){
     okValue:'确定',
     ok:function(){
        var power=$("#powerSelect").val();
-       postSell(id,power);
+       postSell(id,power,goodId);
        
        },
     cancelValue:'取消',
@@ -164,24 +164,29 @@ function create(good){          //设置操作方法
     str=str
     
    +"<a href='javascript:void(0);' onclick='pay("+good.id+","+good.priceNew+")'>支付&nbsp;&nbsp;&nbsp;</a>"
-   +"<a href='<%=basePath%>jsp/goods_new.jsp?goodId="+good.id+"&type=see'>查看&nbsp;&nbsp;&nbsp;</a>"
-   +"<a href='javascript:void(0);' onclick='del("+good.id+")'>取消"+"</a>";
+   +"<a href='<%=basePath%>jsp/goods_new.jsp?goodId="+good.id+"&type=seeFromBuy'>查看&nbsp;&nbsp;&nbsp;</a>"
+   +"<a href='javascript:void(0);' onclick='del("+good.id+")'>取消订单"+"</a>";
     break;
     case "已付款":
     str=str
-    +"<a href='<%=basePath%>jsp/goods_new.jsp?goodId="+good.id+"&type=see'>查看&nbsp;&nbsp;&nbsp;</a>"
-   +"<a href='javascript:void(0);' onclick='del("+good.id+")'>取消"+"</a>";
+    +"<a href='<%=basePath%>jsp/goods_new.jsp?goodId="+good.id+"&type=seeFromBuy'>查看&nbsp;&nbsp;&nbsp;</a>"
+   +"<a href='javascript:void(0);' onclick='del("+good.id+")'>取消订单"+"</a>";
     break;
     case "已发货":
     str=str
-    +"<a href='<%=basePath%>jsp/goods_new.jsp?goodId="+good.id+"&type=see'>查看&nbsp;&nbsp;&nbsp;</a>"
+    +"<a href='<%=basePath%>jsp/goods_new.jsp?goodId="+good.id+"&type=seeFromBuy'>查看&nbsp;&nbsp;&nbsp;</a>"
    +"<a href='javascript:void(0);' onclick='getIt("+good.id+")'>确定收货"+"</a>"; 
     break;
     case "已收货":
+    case "卖家已评价":
     str=str
-    +"<a href='<%=basePath%>jsp/goods_new.jsp?goodId="+good.id+"&type=see'>查看&nbsp;&nbsp;&nbsp;</a>"
-   +"<a href='javascript:void(0);' onclick='howSell("+good.userByIdOwner.id+")'>评价卖家"+"</a>";
-  
+    +"<a href='<%=basePath%>jsp/goods_new.jsp?goodId="+good.id+"&type=seeFromBuy'>查看&nbsp;&nbsp;&nbsp;</a>"
+   +"<a href='javascript:void(0);' onclick='howSell("+good.userByIdOwner.id+","+good.id+")'>评价卖家"+"</a>";
+     break;
+    case "买家已评价":
+    case "双方已评价":
+     str=str
+    +"<a href='<%=basePath%>jsp/goods_new.jsp?goodId="+good.id+"&type=seeFromBuy'>查看&nbsp;&nbsp;&nbsp;</a>";
     break;
     
    }
@@ -193,9 +198,9 @@ function create(good){          //设置操作方法
 function query(pageNo,pageSize){         //请求数据
           $.ajax({
 					type : "POST",
-					url :"<%=basePath %>shoppingGoods",
+					url :"<%=basePath %>queryAllBySizeGoods",
 					async:true,
-					data:{"pageNo":pageNo , "pageSize":pageSize,"userId":'<s:property value="#session.user.id" />'},
+					data:{"pageNo":pageNo , "pageSize":pageSize,"buyUserId":'<s:property value="#session.user.id" />'},
 					dataType : "json",
 					success : function(data) {
 						if(data){

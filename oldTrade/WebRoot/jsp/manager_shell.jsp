@@ -64,12 +64,12 @@ function delUser(id){
   }  
 }
 
-function postSell(id,power){
+function postSell(id,power,goodId){
     $.ajax({
 					type : "POST",
 					url :"<%=basePath %>howBuyUser",
 					async:true,
-					data:{"user.id":id,"range":power},
+					data:{"user.id":id,"range":power,"goodId":goodId},
 					dataType : "json",
 					success : function(data) {
 						if(data){
@@ -112,7 +112,7 @@ function send(id){
   }
 }
 
-function howBuy(id){
+function howBuy(id,goodId){
   var powers=["5星","4星","3星","2星","1星"];
    var html='<select id="powerSelect">'
              +'<option value="5">'+powers[0]+'</option>'
@@ -128,7 +128,7 @@ function howBuy(id){
     okValue:'确定',
     ok:function(){
        var power=$("#powerSelect").val();
-       postSell(id,power);
+       postSell(id,power,goodId);
        
        },
     cancelValue:'取消',
@@ -149,28 +149,32 @@ function create(good){          //设置操作方法
 	break;
 	case "下架":
 	  str=str
-    +"<a href='<%=basePath%>jsp/goods_new.jsp?goodId="+good.id+"&type=see'>查看&nbsp;&nbsp;&nbsp;</a>";
+    +"<a href='<%=basePath%>jsp/goods_new.jsp?goodId="+good.id+"&type=seeFromBuy'>查看&nbsp;&nbsp;&nbsp;</a>";
    break;
     case "已预订":
     str=str
-    +"<a href='<%=basePath%>jsp/goods_new.jsp?goodId="+good.id+"&type=see'>查看&nbsp;&nbsp;&nbsp;</a>"; 
+    +"<a href='<%=basePath%>jsp/goods_new.jsp?goodId="+good.id+"&type=seeFromBuy'>查看&nbsp;&nbsp;&nbsp;</a>"; 
     break;
     case "已付款":
     str=str
-    +"<a href='<%=basePath%>jsp/goods_new.jsp?goodId="+good.id+"&type=see'>查看&nbsp;&nbsp;&nbsp;</a>"
+    +"<a href='<%=basePath%>jsp/goods_new.jsp?goodId="+good.id+"&type=seeFromBuy'>查看&nbsp;&nbsp;&nbsp;</a>"
    +"<a href='javascript:void(0);' onclick='send("+good.id+")'>发货"+"</a>";
     break;
     case "已发货":
     str=str
-    +"<a href='<%=basePath%>jsp/goods_new.jsp?goodId="+good.id+"&type=see'>查看&nbsp;&nbsp;&nbsp;</a>"; 
+    +"<a href='<%=basePath%>jsp/goods_new.jsp?goodId="+good.id+"&type=seeFromBuy'>查看&nbsp;&nbsp;&nbsp;</a>"; 
     break;
     case "已收货":
+    case "买家已评价":
     str=str
-   +"<a href='<%=basePath%>jsp/goods_new.jsp?goodId="+good.id+"&type=see'>查看&nbsp;&nbsp;&nbsp;</a>"
-   +"<a href='javascript:void(0);' onclick='howBuy("+good.userByIdOwner.id+")'>评价买家"+"</a>";
-  
+   +"<a href='<%=basePath%>jsp/goods_new.jsp?goodId="+good.id+"&type=seeFromBuy'>查看&nbsp;&nbsp;&nbsp;</a>"
+   +"<a href='javascript:void(0);' onclick='howBuy("+good.userByIdOwner.id+","+good.id+")'>评价买家"+"</a>";
     break;
-     
+    case "卖家已评价":
+    case "双方已评价":
+     str=str
+    +"<a href='<%=basePath%>jsp/goods_new.jsp?goodId="+good.id+"&type=seeFromBuy'>查看&nbsp;&nbsp;&nbsp;</a>";
+    break;
    }
    return str;
  }
@@ -180,7 +184,7 @@ function query(pageNo,pageSize){         //请求数据
 					type : "POST",
 					url :"<%=basePath %>queryAllBySizeGoods",
 					async:true,
-					data:{"pageNo":pageNo , "pageSize":pageSize},
+					data:{ "pageNo":pageNo , "pageSize":pageSize,"userId":'<s:property value="#session.user.id" />'},
 					dataType : "json",
 					success : function(data) {
 						if(data){
@@ -194,7 +198,6 @@ function query(pageNo,pageSize){         //请求数据
 					             buyer=b.dataset[i].userByIdBuyer.name;
 					             buyer="<a href='<%=basePath%>jsp/user_info.jsp?userid="+b.dataset[i].userByIdBuyer.id+"'>"+b.dataset[i].userByIdBuyer.name+"</a>";
 					           }
-					            if(b.dataset[i].userByIdOwner.id=='<s:property value="#session.user.id" />'){
 					               $("#dataCotain").append("<tr>"
 					               +"<td>"+b.dataset[i].name+"</td>"
 					               +"<td>"+b.dataset[i].priceNew+"</td>"
@@ -207,7 +210,6 @@ function query(pageNo,pageSize){         //请求数据
 					               +"</td>"
 					               +"</tr>"
 					               );
-					               }
 					           }
 					        }		
 							

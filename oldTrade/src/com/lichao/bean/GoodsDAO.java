@@ -3,15 +3,25 @@ package com.lichao.bean;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Set;
+
+import org.hibernate.Criteria;
 import org.hibernate.LockOptions;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Example;
+import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.lichao.entity.BaseEntity;
+import com.lichao.utill.FelcxTool;
+
+import freemarker.template.utility.StringUtil;
 
 /**
  * A data access object (DAO) providing persistence and search support for Goods
@@ -195,6 +205,62 @@ public class GoodsDAO {
 
 	public static GoodsDAO getFromApplicationContext(ApplicationContext ctx) {
 		return (GoodsDAO) ctx.getBean("GoodsDAO");
+	}
+	
+	public BaseEntity<Object> search(int pageNo,int pageSize,String name,String userName,double price,int typeid,
+			int state,int userId,int buyerId){
+		BaseEntity<Object> pager = new BaseEntity<Object>();
+		try
+		{
+			Criteria criteria = getCurrentSession().createCriteria(Goods.class);
+			criteria.add(Restrictions.isNotNull("priceNew"));
+            if(FelcxTool.isNotEmpty(name)){
+            	criteria.add(Restrictions.like("name",name,MatchMode.ANYWHERE));
+            }
+            if(price>=0){
+            	criteria.add(Restrictions.le("priceNew", price));
+            }
+            if(state!=-1){
+            	criteria.add(Restrictions.le("state", state));
+            }
+			if(typeid!=-1){
+				criteria.createCriteria("types")
+		        .add(Restrictions.eq("id", typeid));
+			}
+			if(FelcxTool.isNotEmpty(userName)){
+				criteria.createCriteria("userByIdOwner")
+				        .add(Restrictions.like("name", userName, MatchMode.ANYWHERE));
+				
+			}
+			if(userId!=-1){
+				criteria.createCriteria("userByIdOwner")
+		        .add(Restrictions.eq("id", userId));
+			}
+			if(buyerId!=-1){
+				criteria.createCriteria("userByIdBuyer")
+		        .add(Restrictions.eq("id", buyerId));
+			}
+			// 获取根据条件分页查询的总行数
+			long rowCount = (long) criteria.setProjection(
+					Projections.rowCount()).uniqueResult();
+			criteria.setProjection(null);
+
+			criteria.setFirstResult((pageNo - 1) * pageSize);
+			criteria.setMaxResults(pageSize);
+
+			List result = criteria.list();
+			pager.setCount(result.size());
+			pager.setDataset(result);
+			pager.setTotalCount(rowCount+"");
+
+
+		} catch (RuntimeException re)
+		{
+			throw re;
+		} finally
+		{
+			return pager;
+		}
 	}
 	
 	public List findBySize(int pageNo,int pageSize){

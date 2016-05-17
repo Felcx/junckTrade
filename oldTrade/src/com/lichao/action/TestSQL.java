@@ -18,8 +18,13 @@ public class TestSQL  extends BaseAction{
 	public static void main(String[] args) { 
 		//userTest();
        // adminTest();
-         System.out.println(1/10);
+		testQuery();
     } 
+	
+	private static void testQuery(){
+		
+		
+	}
 	
 	private static void adminTest(){
 		/* 1. Create a new user */ 

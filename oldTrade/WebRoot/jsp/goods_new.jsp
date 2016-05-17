@@ -151,7 +151,7 @@ $(document).ready(function(){
      goodsId=Math.floor((new Date()).valueOf()/1000);
     
    }
-   if(typeSee!='see'){
+   if(typeSee=="null"){
     
     $('#test').diyUpload({
 	url:"<%=basePath %>uploadFileGoods?goodsId="+goodsId+"&userId="+userId,
@@ -167,7 +167,11 @@ $(document).ready(function(){
       $("#box").hide();
       $("#buttonSumit").hide();
       $("#boxText").hide();
+      if(typeSee=='see'){
       $("#goback").attr({href:"<%=basePath %>jsp/admin/good.jsp"});
+      }else if(typeSee=='seeFromBuy'){
+      $("#goback").attr({href:"<%=basePath %>jsp/manager_buy.jsp"});
+      }
     }
 	query();
 	
@@ -190,9 +194,11 @@ var box='';
     box=box+'<div class="col-sm-6 col-md-4">'
    +'<div class="thumbnail">'
    +'<img data-holder-rendered="true" src="<%=basePath%>upload/'+imgSrc+'" style="width:auto!important;height:200px!important; display: block;" data-src="holder.js/100%x200" alt="人家是图">'
-   +'<div class="caption">'
-   +'<p class="text-center"><a href="javascript:void(0);" onclick="delect(\''+imgSrc+'\')" class="btn btn-danger" role="button">删除</a></p>'
-   +'</div>'
+   +'<div class="caption">';
+    if(typeSee=="null"){
+   box=box+'<p class="text-center"><a href="javascript:void(0);" onclick="delect(\''+imgSrc+'\')" class="btn btn-danger" role="button">删除</a></p>';
+   }
+   box=box+'</div>'
    +'</div>'
    +'</div>';
    }

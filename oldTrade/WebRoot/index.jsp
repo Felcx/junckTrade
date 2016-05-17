@@ -5,7 +5,6 @@
 <html>
 <head>
 
-<title>瓜瓜旧货交易网</title>
 <link href="css/index.css" rel="stylesheet">
 
 </head>
@@ -50,18 +49,18 @@
 							aria-expanded="false"><span id="searchType">商品名称</span> <span
 								class="caret"></span></a>
 							<ul class="dropdown-menu" id="searchItems">
-								<li><a href="#" class="searchItem">商品名称</a></li>
-								<li><a href="#" class="searchItem">卖家</a></li>
-								<li><a href="#" class="searchItem">售价</a></li>
+								<li><a href="javascript:void(0);" class="searchItem">商品名称</a></li>
+								<li><a href="javascript:void(0);" class="searchItem">卖家</a></li>
+								<li><a href="javascript:void(0);" class="searchItem">售价</a></li>
 							</ul></li>
 					</ul>
-					<form class="navbar-form navbar-right" role="search">
+					<div class="navbar-form navbar-right" >
 						<div class="form-group">
 							<input type="text" id="searcher" class="form-control"
 								placeholder="iphone6s、笔记本">
 						</div>
-						<button type="submit" onclick="search();" class="btn btn-default">搜索</button>
-					</form>
+						<button  onclick="initGood(0,1,9);" class="btn btn-default">搜索</button>
+					</div>
 				</div>
 			</div>
 			<!-- /.nav-collapse -->
@@ -94,7 +93,7 @@
 
 			<div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar">
 				<div class="list-group" id="dataCotain">
-					<a href="#" class="list-group-item active">商品类型</a>
+					<a href="javascript:void(0);" onclick="initGood(-1,1,9);" class="list-group-item active">商品类型</a>
 
 				</div>
 				<marquee id="notice"
@@ -122,26 +121,33 @@
 <script src="js/index.js"></script>
 <script type="text/javascript">
 
-
+  var mTypeid=-1;
 
   $(document).ready(function(){
-     initMenu();
-     initMessage();
+     initMenu();          //初始化菜单
+     initMessage();       //初始化公告栏
      
      var pageNo=1;
-	var pageSize=10;
-     initGoods(-1,pageNo,pageSize);
+	var pageSize=9;
+     initGood(-1,pageNo,pageSize);         //初始化商品
+     $("#searcher").val("");
   });
   
-  function search(){
-    var text=$.trim($("#searcher").val());
+  function initGood(typeId,pageNo,pageSize){                      //搜索方法
+    var text=$.trim($("#searcher").val());         
     var searchType=$("#searchType").text();
-    if(text.length>0){
+    var typeid="";
+    if(typeId!=0){
+      mTypeid=typeId;
+      typeid=typeId;
+    }else{
+      typeid=mTypeid;
+    }
        $.ajax({
 					type : "POST",
-					url :"<%=basePath %>queryAllBySizeGoods",
+					url :"<%=basePath %>queryAllBySizeGoods",            
 					async:true,
-					data:{"searchType":searchType,"searcher":text,"pageNo":1 , "pageSize":10},
+					data:{"state":1,"typeId":typeid,"searchType":searchType,"searcher":text,"pageNo":pageNo , "pageSize":pageSize},
 					dataType : "json",
 					success : function(data) {
 						if(data){
@@ -151,13 +157,9 @@
 					        if(b.dataset.length>0){
 					           for(var i=0;i<b.dataset.length;i++){
 					              var good=b.dataset[i];
-					             
 					               $("#goodsContain").append(creatImage(good));
-					              
 					           }
 					        }		
-							  var pageSize=10;
-							  pageNo=1;
 							  var count=Math.ceil(b.totalCount/pageSize);
 							  init(count,pageNo);
 							}else {
@@ -168,7 +170,6 @@
 					  error : function(XMLHttpRequest, textStatus, errorThrown) {
 						}
 			}); 
-    }    
   }
   
   function viewDetail(id){
@@ -192,50 +193,19 @@
   return box;
 }
 
-   function initGoods(typeid,pageNo,pageSize){
-     $.ajax({
-					type : "POST",
-					url :"<%=basePath %>queryAllBySizeGoods",
-					async:true,
-					data:{"typeId":typeid,"pageNo":pageNo , "pageSize":pageSize},
-					dataType : "json",
-					success : function(data) {
-						if(data){
-							var b = eval(data); //转换为对象
-							if(b.code==0 ){
-							$("#goodsContain").empty();
-					        if(b.dataset.length>0){
-					           for(var i=0;i<b.dataset.length;i++){
-					              var good=b.dataset[i];
-					               if(good.state ==1){         //只有上架的才显示
-					               $("#goodsContain").append(creatImage(good));
-					                }
-					           }
-					        }		
-							
-							  var count=Math.ceil(b.totalCount/pageSize);
-							  init(count,pageNo);
-							}else {
-							  alert(b.message);
-							}
-						}
-					  },
-					  error : function(XMLHttpRequest, textStatus, errorThrown) {
-						}
-					}); 
-   }
+  
    
-   function init(count,index){
+   function init(count,index){           //初始化页数
          var display=0;
          if(count<=9){
            display=count;
              if(count<=0){
            display=1;
            count=1;
-  }
-}else{
-  display=9;
-}
+               }
+            }else{
+              display=9;
+            }
      $("#demo2").paginate({
 				count 		: count,
 				start 		: index,
@@ -250,7 +220,7 @@
 				images		            : false,
 				mouse		: 'press',
 				onChange     			: function(page){
-											query(page,10);
+											initGood(0,page,9);
                                           }
 			});
 			}
@@ -269,7 +239,7 @@
 					        if(b.dataset.length>0){
 					           for(var i=0;i<b.dataset.length;i++){
 					               $("#dataCotain").append(
-					               '<a href="javascript:void(0);" onclick="initGoods('+b.dataset[i].id+',1,10)" class="list-group-item">'+
+					               '<a href="javascript:void(0);"  onclick="initGood('+b.dataset[i].id+',1,9);" class="list-group-item">'+
 					               b.dataset[i].name
 					               +'</a>'
 					               );

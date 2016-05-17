@@ -37,14 +37,17 @@
 	       <div class="col-xs-3 col-md-3"><input id="email" class="form-control" /></div>
 	    </div>
 	    <div class="row">
-	       <div class="col-xs-3 col-md-3"><p class="text-right" style="margin-top: 8px">真实姓名:</p></div>
+	       <div class="col-xs-3 col-md-3"><p class="text-right" style="margin-top: 8px">真实姓名*:</p></div>
 	       <div class="col-xs-3 col-md-3"><input id="realName" class="form-control" /></div>
 	       <div class="col-xs-3 col-md-3"><p class="text-right" style="margin-top: 8px">真实地址:</p></div>
 	       <div class="col-xs-3 col-md-3"><input id="adress" class="form-control" /></div>
 	    </div>
 	    <div class="row">
-	       <div class="col-xs-3 col-md-3"><p class="text-right" style="margin-top: 8px">性别:</p></div>
-	       <div class="col-xs-3 col-md-3"><input id="sex" class="form-control" /></div>
+	       <div class="col-xs-3 col-md-3"><p class="text-right" style="margin-top: 8px">性别*:</p></div>
+	       <div class="col-xs-3 col-md-3"><select id="sex" class="form-control">
+					<option selected="selected" value="女">女</option>
+					<option value="男">男</option>
+				</select></div>
 	    </div>
 	    <div calss="row">
 	    <p class="text-center" style="margin-top:32px"><button type="button" id="sumit" style="width: 300px" onclick="update('<s:property value="#session.user.id" />');" class="btn btn-success btn-lg">提交</button>
@@ -55,11 +58,12 @@
     
     function update(id){
        var address= $("#adress").val();
-       var phone=$("#phone").val();
+       var phone=$.trim($("#phone").val());
        var email=$("#email").val();
        var bancar=$("#bancar").val();
-       var realName=$("#realName").val(); 
+       var realName=$.trim($("#realName").val()); 
        var sex=$("#sex").val();
+       if(phone.length>0&&realName.length>0&&sex.length>0){
         $.ajax({
 					type : "POST",
 					url :"<%=basePath %>updateUser",
@@ -81,7 +85,9 @@
 						}
 					}); 
             
-       
+       }else{
+          alert("请输入带星号的必填项！");
+       }
     }
     
     function query(id){         //请求登录
